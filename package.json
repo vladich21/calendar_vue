@@ -1,0 +1,25 @@
+{
+  "name": "application",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Vlad, Andrey",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "vue": "^3.4.27",
+    "vue-router": "^4.0.13"
+  },
+  "devDependencies": {
+    "eslint": "^9.2.0",
+    "@babel/core": "^7.17.2",
+    "@babel/preset-env": "^7.17.1"
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not dead"
+  ]
+}
