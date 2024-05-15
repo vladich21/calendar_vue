@@ -1,9 +1,11 @@
 <script>
+const pages = ['sign-up', 'sign-in']
+
 export default {
 
   computed: {
-    getFoo() {
-      return true
+    alignCenter() {
+      return pages.includes(this.$route.name)
     }
   }
 }
@@ -11,7 +13,7 @@ export default {
 
 
 <template>
-    <div :class="getFoo ? 'wrapper' : 'wrapper _allign-center'">
+    <div :class="{ wrapper: true, '_align-center': alignCenter}">
         <slot></slot>
     </div>
 </template>
@@ -19,8 +21,10 @@ export default {
 <style lang="scss">
   .wrapper {
     display: flex;
+    height: 100%;
+    width: 100%;
     
-    &._allign-center {
+    &._align-center {
       justify-content: center;
       align-items: center;
     }
