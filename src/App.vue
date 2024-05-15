@@ -1,16 +1,19 @@
 <script>
+import Layout from './components/Layout.vue';
 import SignUp from './views/SignUp.vue';
 
   export default {
     components: {
-      SignUp
+      Layout
     }
   }
 </script>
 
 <template>
   <div id="app">
-    <SignUp />
+    <Layout>
+      <RouterView />
+    </Layout>
   </div>
 </template>
 
