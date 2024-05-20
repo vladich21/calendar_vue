@@ -1,10 +1,4 @@
-body {
-  margin: 0;
-  background-color: #0f0c0c;
-  
-}
-
-#app {
-  height: 100vh;
-  width: 100vw;
-}
+@import "./scss/reset";
+@import "./scss/_vars.scss";
+@import "./scss/_settings.scss";
+@import "./scss/_form.scss";
