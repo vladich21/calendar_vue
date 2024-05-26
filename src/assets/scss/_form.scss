@@ -1,3 +1,5 @@
+@import './vars.scss';
+
 .form {
     flex: 1 0 auto;
     display: flex;
@@ -20,7 +22,7 @@
       font-weight: 500;
       font-size: 30px;
       line-height: 45px;
-      color: #000000;
+      color: $black;
       display: block;
       margin-bottom: 22px;
     }
@@ -47,7 +49,7 @@
     font-weight: 600;
     font-size: 20px;
     line-height: 30px;
-    color: #000000;
+    color: $black;
   }
   
   .input-box {
@@ -62,7 +64,7 @@
       font-weight: 500;
       font-size: 13px;
       line-height: 20px;
-      color: #999999;
+      color: $grey;
       user-select: none;
     }
     &-eye {
@@ -79,7 +81,7 @@
       box-sizing: border-box;
       position: relative;
       width: 100%;
-      border-bottom: 2px solid #999999;
+      border-bottom: 2px solid $grey;
       padding-bottom: 9px;
       padding-left: 27px;
       color: #000842;
@@ -93,7 +95,7 @@
     }
   }
   .message_psw {
-    display: none;
+    display: block;
   }
   .form-box__input-box > p{
     font-size: 13px;
@@ -124,18 +126,21 @@
     flex-direction: column;
     align-items: flex-start;
     & > button {
-      background: #0c21c1;
+      background: $blue;
       box-shadow: 0px 4px 26px rgba(0, 0, 0, 0.25);
       border-radius: 32px;
       font-weight: 500;
       font-size: 17px;
       line-height: 26px;
-      color: #ffffff;
+      color: $white;
       width: 100%;
       padding-top: 14px;
       padding-bottom: 14px;
       text-align: center;
       cursor: pointer;
+      &:disabled {
+        background-color: $grey;
+      }
     }
   }
   
@@ -170,7 +175,7 @@
     
 }
   .valid {
-    color: grey;
+    color: $grey;
   }
   .invalid {
     color: red;

@@ -73,4 +73,12 @@ self.addEventListener('fetch', (event: FetchEvent) => {
         .create()
     )
   }
+  if (requestUrl.includes('api/registration')) {
+    event.respondWith(
+      fakeResponse
+        .setStatus(200)
+        .setDelay(1000)
+        .create()
+      )
+  }
 })

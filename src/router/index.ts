@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SignUp from '../views/SignUp.vue'
 import SignIn from '../views/SignIn.vue'
+import Main from '../views/Main.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
 
 const router = createRouter({
@@ -9,7 +10,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'main',
-      redirect: 'sign-up'
+      component: Main
     },
     {
       path: '/sign-up',
