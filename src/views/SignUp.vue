@@ -56,9 +56,26 @@
           </div>
           <p v-if="error">{{ error }}</p>
           <div class="form-box__btn-box btn-box">
+<<<<<<< HEAD
+            <button id="registerButton" type="submit">Register</button>
+            <p class="privacy-policy">
+          By using Calendar you accept our
+          <router-link to="/terms-of-service" class="privacy-link">Terms of Service</router-link> and
+          <router-link to="/privacy-policy" class="privacy-link">Privacy Policy</router-link>.
+        </p>
+          </div>
+          <div class="form-box__social">
+            <span class="form-box__social-info">or continue with</span>
+            <div class="form-box__social-items">
+              <a href="#"><img src="../assets/img/svg/github.svg" alt="github" /></a>
+              <a href="#"><img src="../assets/img/svg/google.svg" alt="google" /></a>
+              <a href="#"><img src="../assets/img/svg/apple.svg" alt="apple" /></a>
+            </div>
+=======
             <button :disabled="submitButtonIsDisabled" id="registerButton" type="submit">
               Register
             </button>
+>>>>>>> 55f083ab637b6ba33e0531cc71d965a6f5aafd08
           </div>
         </form>
       </div>
@@ -143,5 +160,4 @@ export default {
 
 <style scoped>
 @import '@/assets/main.scss';
-/* Дополнительные стили */
 </style>

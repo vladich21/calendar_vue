@@ -38,22 +38,40 @@ class FakeResponse implements FakeResponseInterface {
   }
   
   async create() {
-    await new Promise((resolve) => setTimeout(() => resolve(null), this.delay))
-    return new Response(this.responseBody, { status: this.status })
+    await new Promise((resolve) => setTimeout(resolve, this.delay))
+    return new Response(this.responseBody, { status: this.status, headers: { 'Content-Type': 'application/json' } })
   }
-
 }
 
 const fakeResponse = new FakeResponse()
-self.addEventListener('fetch', (event: any) => {
-  const requestUrl = event.request.url
 
-  if (requestUrl.includes('api/sign-up')) {
+self.addEventListener('fetch', (event: FetchEvent) => {
+  const requestUrl = new URL(event.request.url)
+
+  if (requestUrl.pathname.includes('/api/sign-up')) {
+    console.log('Intercepting /api/sign-up')
     event.respondWith(
       fakeResponse
         .setStatus(200)
+        .setResponseBody({ message: 'User signed up successfully' })
         .create()
-      )
+    )
+  } else if (requestUrl.pathname.includes('/api/forgot-password')) {
+    console.log('Intercepting /api/forgot-password')
+    event.respondWith(
+      fakeResponse
+        .setStatus(200)
+        .setResponseBody({ message: 'Password reset link sent' })
+        .create()
+    )
+  } else if (requestUrl.pathname.includes('/api/sign-in')) {
+    console.log('Intercepting /api/sign-in')
+    event.respondWith(
+      fakeResponse
+        .setStatus(200)
+        .setResponseBody({ message: 'User signed in successfully' })
+        .create()
+    )
   }
   if (requestUrl.includes('api/registration')) {
     event.respondWith(
