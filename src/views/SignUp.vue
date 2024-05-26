@@ -51,6 +51,19 @@
           </div>
           <div class="form-box__btn-box btn-box">
             <button id="registerButton" type="submit">Register</button>
+            <p class="privacy-policy">
+          By using Calendar you accept our
+          <router-link to="/terms-of-service" class="privacy-link">Terms of Service</router-link> and
+          <router-link to="/privacy-policy" class="privacy-link">Privacy Policy</router-link>.
+        </p>
+          </div>
+          <div class="form-box__social">
+            <span class="form-box__social-info">or continue with</span>
+            <div class="form-box__social-items">
+              <a href="#"><img src="../assets/img/svg/github.svg" alt="github" /></a>
+              <a href="#"><img src="../assets/img/svg/google.svg" alt="google" /></a>
+              <a href="#"><img src="../assets/img/svg/apple.svg" alt="apple" /></a>
+            </div>
           </div>
         </form>
       </div>
@@ -130,5 +143,4 @@ export default {
 
 <style scoped>
 @import '@/assets/main.scss';
-/* Дополнительные стили */
 </style>
