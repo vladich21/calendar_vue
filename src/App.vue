@@ -1,14 +1,3 @@
-<script>
-import Layout from './components/Layout.vue';
-import SignUp from './views/SignUp.vue';
-
-  export default {
-    components: {
-      Layout
-    }
-  }
-</script>
-
 <template>
   <div id="app">
     <Layout>
@@ -17,3 +6,12 @@ import SignUp from './views/SignUp.vue';
   </div>
 </template>
 
+<script>
+import Layout from './components/Layout.vue';
+
+export default {
+  components: {
+    Layout
+  }
+}
+</script>
