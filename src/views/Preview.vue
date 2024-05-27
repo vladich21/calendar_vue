@@ -1,6 +1,6 @@
 <template>
     <h1>preview</h1>
-    <router-link to="/" class="privacy-link">Privacy Policy</router-link>
+    <router-link to="/" class="privacy-link">HOME</router-link>
     {{ console.log('preview') }}
 </template>
 <script lang="ts" setup>
