@@ -56,7 +56,6 @@
           </div>
           <p v-if="error">{{ error }}</p>
           <div class="form-box__btn-box btn-box">
-<<<<<<< HEAD
             <button id="registerButton" type="submit">Register</button>
             <p class="privacy-policy">
           By using Calendar you accept our
@@ -71,11 +70,6 @@
               <a href="#"><img src="../assets/img/svg/google.svg" alt="google" /></a>
               <a href="#"><img src="../assets/img/svg/apple.svg" alt="apple" /></a>
             </div>
-=======
-            <button :disabled="submitButtonIsDisabled" id="registerButton" type="submit">
-              Register
-            </button>
->>>>>>> 55f083ab637b6ba33e0531cc71d965a6f5aafd08
           </div>
         </form>
       </div>
@@ -149,7 +143,7 @@ export default {
           throw new Error()
         }
       } catch (e) {
-        this.error = 'Что-то пошло не так...'
+        this.error = 'Something went wrong...'
       } finally {
         this.isLoading = false
       }
