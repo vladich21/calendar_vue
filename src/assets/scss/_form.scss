@@ -42,7 +42,6 @@
       line-height: 24px;
       color: var(--blue-color);
     }
-
   }
   
   .logo {
@@ -168,11 +167,11 @@
       }
     }
   }
+  
   .message {
     padding-top: 10px;
     text-align: center;
-    color: red;
-    
+    color: red; 
 }
   .valid {
     color: $grey;

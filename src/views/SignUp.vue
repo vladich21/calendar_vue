@@ -143,7 +143,7 @@ export default {
           throw new Error()
         }
       } catch (e) {
-        this.error = 'Что-то пошло не так...'
+        this.error = 'Something went wrong...'
       } finally {
         this.isLoading = false
       }
