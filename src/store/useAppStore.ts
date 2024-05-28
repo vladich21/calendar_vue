@@ -2,11 +2,11 @@ import { defineStore } from "pinia";
 
 export const useAppStore = defineStore('app', {
     state: () => ({
-    isFirstVisit: true
+        isFirstVisit: true
     }),
     actions: {
-        setIsFirstVisit: (value:boolean) => {
-            this.isFirstVisit = value 
+        setIsFirstVisit(value: boolean) {
+            this.isFirstVisit = value
         }
     }
 })
