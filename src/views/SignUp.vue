@@ -119,7 +119,7 @@ export default {
       return !this.passwordRules.every((el) => el.isValid) || this.isLoading
     },
     getEyeIcon() {
-      return this.passwordIsVisible ? this.eyeClose : this.eye
+      return this.passwordIsVisible ? this.eye : this.eyeClose
     }
   },
   methods: {

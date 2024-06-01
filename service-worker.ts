@@ -84,7 +84,7 @@ self.addEventListener('fetch', (event: FetchEvent) => {
   if(requestUrl.pathname.includes('api/authorization-status')) {
     event.respondWith(
       fakeResponse
-        .setStatus(401)
+        .setStatus(200)
         .setDelay(1000)
         .create()
       )
