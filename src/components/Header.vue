@@ -1,61 +1,69 @@
 <template>
-    <div class="app">
-      <header class="header">
-        <div class="container">
-          <img src="../assets/img/svg/calendar.svg" alt="Calendar" class="logo">
-          <nav>
-            <ul>
-              <li :class="{dropdown: true, open: isDropdownOpen }" @click="toggleDropdown">
-                <a href="#">Possibilities
-                  <img src="../assets/img/svg/down-arrow.svg" alt="dropdown" class="dropdown_img">
-                </a>
-                <ul 
-                  class="dropdown-content"
-                  v-if="isDropdownOpen"
-                  v-click-outside="handleOutsideClick">
-                  <li><a href="#">To-do list</a></li>
-                  <li><a href="#">My day</a></li>
-                  <li><a href="#">7 days</a></li>
-                  <li><a href="#">Calendar</a></li>
-                </ul>
-              </li>
-              <li><a href="#">Personal</a></li>
-              <li><a href="#">For teams</a></li>
-              <li><a href="#">Pricing</a></li>
-            </ul>
-            <router-link to="/" class="home_btn">Login</router-link>
-          </nav>
-        </div>
-      </header>
-    </div>
-  </template>
-  
-  <script setup lang="ts">
-  import { ref, onBeforeUnmount } from 'vue';
-  
-  const isDropdownOpen = ref(false);
-  
-  const toggleDropdown = () => {
-    isDropdownOpen.value = !isDropdownOpen.value;
-  };
-  
-  const handleOutsideClick = (e: MouseEvent) => {
-    if (!(dropdownRef.value as HTMLElement).contains(e.target as Node)) {
-      isDropdownOpen.value = false;
-    }
-  };
-  
-  const dropdownRef = ref<HTMLElement | null>(null);
-  
-  const onClick = (e: MouseEvent) => {
-    handleOutsideClick(e);
-  };
-  
-  onBeforeUnmount(() => {
-    document.removeEventListener('click', onClick);
-  });
-  </script>
-  
+  <div
+    v-if="isDropdownOpen"
+    class="background"
+    data-id="bg"
+    @click="toggleDropdown"
+  ></div>
+  <div class="app">
+    <header class="header">
+      <div class="container">
+        <img src="../assets/img/svg/calendar.svg" alt="Calendar" class="logo" />
+        <nav>
+          <ul>
+            <li :class="{ dropdown: true, open: isDropdownOpen }" @click="toggleDropdown">
+              <a href="#"
+                >Possibilities
+                <img src="../assets/img/svg/down-arrow.svg" alt="dropdown" class="dropdown_img" />
+              </a>
+              <ul class="dropdown-content" v-if="isDropdownOpen">
+                <li><a href="#">To-do list</a></li>
+                <li><a href="#">My day</a></li>
+                <li><a href="#">7 days</a></li>
+                <li><a href="#">Calendar</a></li>
+              </ul>
+            </li>
+            <li><a href="#">Personal</a></li>
+            <li><a href="#">For teams</a></li>
+            <li><a href="#">Pricing</a></li>
+          </ul>
+          <router-link to="/" class="home_btn">Login</router-link>
+        </nav>
+      </div>
+    </header>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onBeforeUnmount } from 'vue'
+
+const isDropdownOpen = ref(false)
+
+const toggleDropdown = (e) => {
+  if (e.target.getAttribute('data-id') === 'bg') {
+    isDropdownOpen.value = false
+    return
+  }
+  isDropdownOpen.value = !isDropdownOpen.value
+}
+
+const handleOutsideClick = (e: MouseEvent) => {
+  if (!(dropdownRef.value as HTMLElement).contains(e.target as Node)) {
+    isDropdownOpen.value = false
+  }
+}
+
+const dropdownRef = ref<HTMLElement | null>(null)
+
+const onClick = (e: MouseEvent) => {
+  handleOutsideClick(e)
+}
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', onClick)
+})
+</script>
+
 <style lang="scss" scoped>
 .app {
   width: 100%;
@@ -131,7 +139,7 @@
             }
           }
           &::before {
-            content: "";
+            content: '';
             width: 0;
             height: 0;
             border-width: 0 9.5px 10px 9.5px;
@@ -140,12 +148,10 @@
             position: absolute;
             left: 50%;
             margin-left: -10px;
-            
           }
 
           &.open .dropdown-content {
             display: block;
-            
           }
         }
       }
@@ -166,4 +172,10 @@
     }
   }
 }
+.background {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    z-index: 0;
+  }
 </style>
