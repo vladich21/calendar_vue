@@ -76,6 +76,8 @@
   <style lang="scss" scoped>
   .app {
     width: 100%;
+    position: fixed;
+      z-index: 1000;
   
     .header {
       background-color: #fff;
@@ -212,8 +214,10 @@
   .header nav ul.open {
     display: flex;
   }
+  .header nav ul .dropdown .dropdown-content {
+           margin-top: 30px; 
+  }
 
-  
   .burger {
     display: flex;
     flex-direction: column;
