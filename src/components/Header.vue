@@ -35,6 +35,7 @@
   </template>
   
   <script setup lang="ts">
+
   import { ref, onMounted, onBeforeUnmount } from 'vue'
   
   const isDropdownOpen = ref(false)
@@ -209,11 +210,12 @@
     padding-top: 50px;
     background-color: #fff;
     align-items: center;
- 
   }
+
   .header nav ul.open {
     display: flex;
   }
+
   .header nav ul .dropdown .dropdown-content {
            margin-top: 30px; 
   }
@@ -238,6 +240,5 @@
     display: none;
   }
 }
-  }
+}
   </style>
-  

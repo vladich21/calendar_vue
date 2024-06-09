@@ -1,14 +1,14 @@
 <template>
-   <section class="hero">
-    <div class="container">
-        <h1>Organize your work and life.</h1>
-        <P>Simple and universal task planning for any of your tasks: manage your time and effectively achieve your goals.</P>
-        <button class="button">Start for free!</button>
-    </div>
-</section>
-<section class="hero">
-    <div class="img-container_hero">
-        <img src="../assets/img/my_day.png" alt="App" class="my_day_img" width="90%">
+   <section class="header">
+       <div class="container">
+           <h1>Organize your work and life.</h1>
+           <P>Simple and universal task planning for any of your tasks: manage your time and effectively achieve your goals.</P>
+           <button class="button" ref="mainButton">Start for free!</button>
+        </div>
+        <img src="../assets/img/life_style.jpg" alt="life_style" width="50%" class="life_style_img">
+    </section>
+    <section class="hero">
+        <div class="container_hero">
         <h2>Join thousands highly effective individuals, families and teams</h2>
     </div>
 </section>
@@ -58,19 +58,138 @@
     </div>
     </div>
 </section>
+<section class="sevenDays">
+    <div class="sevenDays_container">
+        <div class="sevenDay">
+            <h3>7 days</h3>
+            <p>My Day is a convenient tool for planning and organizing your work time and personal affairs.</p>
+        <div class="img-container_sevenDays">
+            <ul>
+                <h2>Possibilities</h2>
+                <li class="sevenDays_li">Organize all your to-dos into lists and projects</li>
+                <li class="sevenDays_li">Color code them to help you prioritize.</li>
+                <li class="sevenDays_li">Setting deadlines will help you progress towards your goals.</li>
+                <li class="sevenDays_li">Collaborate as a team on one to-do list and share them with others</li>
+            </ul>
+            <img src="../assets/img/7 days.png" alt="App" class="sevenDays_img" width="50%">
+        </div>
+    </div>
+    </div>
+</section>
+<section class="calendar">
+    <div class="calendar_container">
+        <div class = "calend">
+            <h3>Calendar</h3>
+            <p>My Day is a convenient tool for planning and organizing your work time and personal affairs.</p>
+        <div class="img-container_calendar">
+            <ul>
+                <h2>Possibilities</h2>
+                <li class="calendar_li">Organize all your to-dos into lists and projects</li>
+                <li class="calendar_li">Color code them to help you prioritize.</li>
+                <li class="calendar_li">Setting deadlines will help you progress towards your goals.</li>
+                <li class="calendar_li">Collaborate as a team on one to-do list and share them with others</li>
+            </ul>
+            <img src="../assets/img/calendar.png" alt="App" class="calendar_img" width="50%">
+        </div>
+    </div>
+    </div>
+</section>
+<section class="reviews">
+    <div class="reviews_container">
+        <h2>What our users say</h2>
+        <div class="review_section">
+            <div class="review">
+                <p>"This app has transformed the way I organize my life. Highly recommend it!"</p>
+                <p>- Sarah L.</p>
+            </div>
+        </div>
+        <div class="review_section">
+            <div class="review">
+                <p>"Simple, intuitive, and effective. Exactly what I needed to stay on top of my tasks."</p>
+                <p>- Mark R.</p>
+            </div>
+        </div>
+        <div class="review_section">
+            <div class="review">
+                <p>"A fantastic tool for team collaboration and task management. Couldn't live without it."</p>
+                <p>- Emily W.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<button class="fixed-button" ref="fixedButton">Start for free!</button>
 </template>
+
 <script lang="ts">
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+
     export default {
         name: 'HeroSection',
+        setup(){
+            const mainButton = ref<HTMLElement | null>(null);
+            const fixedButton = ref<HTMLElement | null>(null);
+            
+            const handleScroll = () => {
+                if (mainButton.value && fixedButton.value) {
+                const rect = mainButton.value.getBoundingClientRect();
+                const isButtonVisible = (rect.top >=0 ) && (rect.bottom <= window.innerHeight);
+
+                    if (isButtonVisible) {
+                        fixedButton.value.classList.remove('show');
+                        fixedButton.value.classList.add('hide');
+                    }
+                    else {
+                        fixedButton.value.classList.remove('hide');
+                        fixedButton.value.classList.add('show');
+                    }
+                }
+            };
+            onMounted (() => {
+                window.addEventListener('scroll', handleScroll);
+            });
+
+            onBeforeUnmount (() => {
+                window.removeEventListener('scroll', handleScroll);
+            });
+            return {
+                mainButton,
+                fixedButton
+            };
+        }
     };
+   
+
 </script>
 
 <style lang="scss" scoped>
 @import '../assets/scss/vars.scss';
+
+.header{
+    display: flex;
+    text-align: center;
+    padding: 200px 0 100px 0;
+    background-color: #fff;  
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
 .hero{
     text-align: center;
     padding: 200px 0 100px 0;
     background-color: #fff;  
+}
+
+.life_style_img {
+    background-size: cover;
+    background-position: center;
+    max-width: 100%;
+    margin: 0 auto ;
 }
 
 h1{
@@ -81,12 +200,12 @@ h1{
 h2{
     margin-bottom: 20px;
     line-height: 1.4;
-    font-size: 1.333em;
+    font-size: 1.5em;
     font-weight: 700;
-    
 }
 
 p{
+    padding: 0 30px;
     text-align: center;
     color: #737373;
     font-size: 24px;
@@ -102,13 +221,36 @@ p{
     cursor: pointer;
 }
 
-.hero:nth-of-type(2){
-    padding: 0 0;
+.fixed-button {
+    padding: 20px 30px;
+    border-radius: 35px;
+    font-size: 24px;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: $blue;
+    color: #fff;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 2s ease-in-out, visibility 0s 2s;
+    visibility: hidden;
 }
 
-.my_day_img{
-    margin-bottom: 40px;
-    box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.21);
+.fixed-button.show {
+    transition: opacity 2s ease-in-out, visibility 0s 0s;
+   visibility: visible;
+    opacity: 1;
+}
+
+.fixed-button.hide{
+    transition: opacity 2s ease-in-out, visibility 0s 2s;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.hero:nth-of-type(2){
+    padding: 0 0;
 }
 
 .clients_logos {
@@ -198,7 +340,7 @@ ul li {
 }
 
 .Day p{
-padding: 0 30px;
+    padding: 0 30px;
 }
 
 .img-container_myDay {
@@ -206,13 +348,136 @@ padding: 0 30px;
     justify-content: space-between;
     align-items: center;
     padding: 30px 50px;
-  
 }
 
 .myDay_img {
     max-width: 100%;
     height: auto;
     box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.21);
+    margin-bottom: 30px;
+}
+
+.sevenDays{
+    padding: 50px 0;
+    text-align: center;
+}
+.sevenDays_container{
+    padding: 20px 0 120px 0;
+}
+.sevenDays_img{
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.21);
+}
+.sevenDay{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.img-container_sevenDays{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 50px;
+}
+
+.calendar{
+    padding: 50px 0;
+    text-align: center;
+}
+.calendar_container{
+    padding: 20px 0 120px 0;
+}
+.calendar_img{
+    max-width: 100%;
+    height: auto;
+    box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.21);
+}
+.calend{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.img-container_calendar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 50px;
+
+}
+.reviews {
+    padding: 50px 0;
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
+.reviews_container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.reviews_container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.review_section {
+    margin-bottom: 20px;
+}
+.review {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    
+}
+
+.review p {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+.review p:last-child {
+    text-align: right;
+    font-weight: bold;
+}
+
+.footer {
+    background-color: #333;
+    color: #fff;
+    padding: 40px 0;
+    text-align: center;
+}
+
+.footer_container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.footer_section {
+    max-width: 300px;
+    margin: 20px;
+}
+
+.footer_section h4 {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.footer_section p, .footer_section a {
+    font-size: 16px;
+    color: #ccc;
+    margin-bottom: 10px;
+    text-decoration: none;
+}
+
+.footer_section a:hover {
+    color: #fff;
 }
 
 @media (max-width: 1024px) {
@@ -239,9 +504,42 @@ ul li{
     align-items: center;
     padding: 30px 50px;
 }
-
+.img-container_sevenDays{
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 50px;
+}
+.sevenDays_img{
+    margin-bottom: 30px;
+}
+.img-container_calendar{
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 50px;
+}
+.calendar_img{
+    margin-bottom: 30px;
+}
 .myDay_img{
     margin-bottom: 30px;
+}
+}
+
+@media (max-width: 768px) {
+    .header{
+        // display: flex;
+        // flex-direction: column;
+        text-align: center;
+        padding: 200px 0 100px 0;
+        background-color: #fff;  
+}
+
+.life_style_img{
+    display: none;
 }
 }
 @media (max-width: 500px) {
