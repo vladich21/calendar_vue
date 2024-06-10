@@ -1,208 +1,225 @@
 <template>
-   <section class="header">
-       <div class="container">
-           <h1>Organize your work and life.</h1>
-           <P>Simple and universal task planning for any of your tasks: manage your time and effectively achieve your goals.</P>
-           <button class="button" ref="mainButton">Start for free!</button>
-        </div>
-        <img src="../assets/img/life_style.jpg" alt="life_style" width="50%" class="life_style_img">
+    <section class="header">
+      <div class="container">
+        <h1>{{ title }}</h1>
+        <p>Simple and universal task planning for any of your tasks: manage your time and effectively achieve your goals.</p>
+        <button 
+        class="button" 
+        ref="mainButton" 
+       >Start for free!
+    </button>
+      </div>
+      <img src="../assets/img/man_table3.jpg" alt="life_style" style="width: 35%" class="life_style_img">
     </section>
     <section class="hero">
-        <div class="container_hero">
+      <div class="container">
         <h2>Join thousands highly effective individuals, families and teams</h2>
-    </div>
-</section>
-<section class="company">
-        <div class="clients_logos">
-            <img loading="lazy" src="../assets/img/svg/Spotify.svg" alt="netflix" height="100" width="80" decoding="async" class="logo">
-            <img loading="lazy" src="../assets/img/svg/netflix.svg" alt="netflix" height="100" width="80" decoding="async" class="logo">
-            <img loading="lazy" src="../assets/img/svg/google_hero.svg" alt="google" height="100" width="80" decoding="async" class="logo">
-            <img loading="lazy" src="../assets/img/svg/wework.svg" alt="wework" height="100" width="180" decoding="async" class="logo">
-            <img loading="lazy" src="../assets/img/svg/yandex_hero.svg" alt="yandex" height="100" width="180" decoding="async" class="logo">
-        </div>
-</section>
-<section class="tasks">
-    <div class="to_do_list_container">
+      </div>
+    </section>
+    <section class="company">
+      <div class="container clients_logos">
+        <img loading="lazy" src="../assets/img/svg/Spotify.svg" alt="netflix" height="100" width="80" decoding="async" class="logo">
+        <img loading="lazy" src="../assets/img/svg/netflix.svg" alt="netflix" height="100" width="80" decoding="async" class="logo">
+        <img loading="lazy" src="../assets/img/svg/google_hero.svg" alt="google" height="100" width="80" decoding="async" class="logo">
+        <img loading="lazy" src="../assets/img/svg/wework.svg" alt="wework" height="100" width="180" decoding="async" class="logo">
+        <img loading="lazy" src="../assets/img/svg/yandex_hero.svg" alt="yandex" height="100" width="180" decoding="async" class="logo">
+      </div>
+    </section>
+    <section class="tasks">
+      <div class="container to_do_list_container">
         <div class="to_do_list">
-            <h3>To do list</h3>
-            <p class="p_cross_out">Now you don't have to keep everything in your head. <br> </p>
-            <p>A to-do list easily helps you organize your time and achieve your goals.</p>
+          <h3>To do list</h3>
+          <p class="p_cross_out">Now you don't have to keep everything in your head. <br></p>
+          <p>A to-do list easily helps you organize your time and achieve your goals.</p>
         </div>
         <div class="img-container_possibilities">
-            <img src="../assets/img/my_day.png" alt="App" class="to_do_list_img" width="50%">
-            <ul>
-                <h2>Possibilities</h2>
-                <li>Organize all your to-dos into lists and projects</li>
-                <li>Color code them to help you prioritize.</li>
-                <li>Setting deadlines will help you progress towards your goals.</li>
-                <li>Collaborate as a team on one to-do list and share them with others</li>
-            </ul>
-    </div>
-    </div>
-</section>
-<section class="myDay">
-    <div class="myDay_container">
+          <img src="../assets/img/my_day.png" alt="App" class="to_do_list_img" width="50%">
+          <ul>
+            <h2>Possibilities</h2>
+            <li>Organize all your to-dos into lists and projects</li>
+            <li>Color code them to help you prioritize.</li>
+            <li>Setting deadlines will help you progress towards your goals.</li>
+            <li>Collaborate as a team on one to-do list and share them with others</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <section class="myDay">
+      <div class="container myDay_container">
         <div class="Day">
-            <h3>My day</h3>
-            <p>My Day is a convenient tool for planning and organizing your work time and personal affairs.</p>
-        <div class="img-container_myDay">
+          <h3>My day</h3>
+          <p>My Day is a convenient tool for planning and organizing your work time and personal affairs.</p>
+          <div class="img-container_myDay">
             <ul>
-                <h2>Possibilities</h2>
-                <li class="myDay_li">Organize all your to-dos into lists and projects</li>
-                <li class="myDay_li">Color code them to help you prioritize.</li>
-                <li class="myDay_li">Setting deadlines will help you progress towards your goals.</li>
-                <li class="myDay_li">Collaborate as a team on one to-do list and share them with others</li>
+              <h2>Possibilities</h2>
+              <li class="myDay_li">Organize all your to-dos into lists and projects</li>
+              <li class="myDay_li">Color code them to help you prioritize.</li>
+              <li class="myDay_li">Setting deadlines will help you progress towards your goals.</li>
+              <li class="myDay_li">Collaborate as a team on one to-do list and share them with others</li>
             </ul>
             <img src="../assets/img/my_day.png" alt="App" class="myDay_img" width="50%">
+          </div>
         </div>
-    </div>
-    </div>
-</section>
-<section class="sevenDays">
-    <div class="sevenDays_container">
+      </div>
+    </section>
+    <section class="sevenDays">
+      <div class="container sevenDays_container">
         <div class="sevenDay">
-            <h3>7 days</h3>
-            <p>My Day is a convenient tool for planning and organizing your work time and personal affairs.</p>
-        <div class="img-container_sevenDays">
+          <h3>7 days</h3>
+          <p>My Day is a convenient tool for planning and organizing your work time and personal affairs.</p>
+          <div class="img-container_sevenDays">
             <ul>
-                <h2>Possibilities</h2>
-                <li class="sevenDays_li">Organize all your to-dos into lists and projects</li>
-                <li class="sevenDays_li">Color code them to help you prioritize.</li>
-                <li class="sevenDays_li">Setting deadlines will help you progress towards your goals.</li>
-                <li class="sevenDays_li">Collaborate as a team on one to-do list and share them with others</li>
+              <h2>Possibilities</h2>
+              <li class="sevenDays_li">Organize all your to-dos into lists and projects</li>
+              <li class="sevenDays_li">Color code them to help you prioritize.</li>
+              <li class="sevenDays_li">Setting deadlines will help you progress towards your goals.</li>
+              <li class="sevenDays_li">Collaborate as a team on one to-do list and share them with others</li>
             </ul>
             <img src="../assets/img/7 days.png" alt="App" class="sevenDays_img" width="50%">
+          </div>
         </div>
-    </div>
-    </div>
-</section>
-<section class="calendar">
-    <div class="calendar_container">
-        <div class = "calend">
-            <h3>Calendar</h3>
-            <p>My Day is a convenient tool for planning and organizing your work time and personal affairs.</p>
-        <div class="img-container_calendar">
+      </div>
+    </section>
+    <section class="calendar">
+      <div class="container calendar_container">
+        <div class="calend">
+          <h3>Calendar</h3>
+          <p>My Day is a convenient tool for planning and organizing your work time and personal affairs.</p>
+          <div class="img-container_calendar">
             <ul>
-                <h2>Possibilities</h2>
-                <li class="calendar_li">Organize all your to-dos into lists and projects</li>
-                <li class="calendar_li">Color code them to help you prioritize.</li>
-                <li class="calendar_li">Setting deadlines will help you progress towards your goals.</li>
-                <li class="calendar_li">Collaborate as a team on one to-do list and share them with others</li>
+              <h2>Possibilities</h2>
+              <li class="calendar_li">Organize all your to-dos into lists and projects</li>
+              <li class="calendar_li">Color code them to help you prioritize.</li>
+              <li class="calendar_li">Setting deadlines will help you progress towards your goals.</li>
+              <li class="calendar_li">Collaborate as a team on one to-do list and share them with others</li>
             </ul>
             <img src="../assets/img/calendar.png" alt="App" class="calendar_img" width="50%">
+          </div>
         </div>
-    </div>
-    </div>
-</section>
-<section class="reviews">
-    <div class="reviews_container">
+      </div>
+    </section>
+    <button class="fixed-button" ref="fixedButton">Start for free!</button>
+    <section class="reviews">
+      <div class="container reviews_container">
         <h2>What our users say</h2>
         <div class="review_section">
-            <div class="review">
-                <p>"This app has transformed the way I organize my life. Highly recommend it!"</p>
-                <p>- Sarah L.</p>
-            </div>
+          <div class="review">
+            <p>"This app has transformed the way I organize my life. Highly recommend it!"</p>
+            <p>- Sarah L.</p>
+          </div>
         </div>
         <div class="review_section">
-            <div class="review">
-                <p>"Simple, intuitive, and effective. Exactly what I needed to stay on top of my tasks."</p>
-                <p>- Mark R.</p>
-            </div>
+          <div class="review">
+            <p>"Simple, intuitive, and effective. Exactly what I needed to stay on top of my tasks."</p>
+            <p>- Mark R.</p>
+          </div>
         </div>
         <div class="review_section">
-            <div class="review">
-                <p>"A fantastic tool for team collaboration and task management. Couldn't live without it."</p>
-                <p>- Emily W.</p>
-            </div>
+          <div class="review">
+            <p>"A fantastic tool for team collaboration and task management. Couldn't live without it."</p>
+            <p>- Emily W.</p>
+          </div>
         </div>
-    </div>
-</section>
-<button class="fixed-button" ref="fixedButton">Start for free!</button>
-</template>
-
-<script lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
-
-    export default {
-        name: 'HeroSection',
-        setup(){
-            const mainButton = ref<HTMLElement | null>(null);
-            const fixedButton = ref<HTMLElement | null>(null);
-            
-            const handleScroll = () => {
-                if (mainButton.value && fixedButton.value) {
-                const rect = mainButton.value.getBoundingClientRect();
-                const isButtonVisible = (rect.top >=0 ) && (rect.bottom <= window.innerHeight);
-
-                    if (isButtonVisible) {
-                        fixedButton.value.classList.remove('show');
-                        fixedButton.value.classList.add('hide');
-                    }
-                    else {
-                        fixedButton.value.classList.remove('hide');
-                        fixedButton.value.classList.add('show');
-                    }
-                }
-            };
-            onMounted (() => {
-                window.addEventListener('scroll', handleScroll);
-            });
-
-            onBeforeUnmount (() => {
-                window.removeEventListener('scroll', handleScroll);
-            });
-            return {
-                mainButton,
-                fixedButton
-            };
+      </div>
+    </section>
+  </template>
+  
+  <script lang="ts">
+  import { ref, onMounted, onBeforeUnmount } from 'vue';
+  
+  export default {
+    name: 'HeroSection',
+    setup() {
+      const mainButton = ref<HTMLElement | null>(null);
+      const fixedButton = ref<HTMLElement | null>(null);
+      const title = "Organize your work and life.";
+      
+  
+      const handleScroll = () => {
+        if (mainButton.value && fixedButton.value) {
+          const rect = mainButton.value.getBoundingClientRect();
+          const isButtonVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
+  
+          if (isButtonVisible) {
+            fixedButton.value.classList.remove('show');
+            fixedButton.value.classList.add('hide');
+          } else {
+            fixedButton.value.classList.remove('hide');
+            fixedButton.value.classList.add('show');
+          }
         }
-    };
-   
+      };
+  
+      onMounted(() => {
+        window.addEventListener('scroll', handleScroll);
+      });
+  
+      onBeforeUnmount(() => {
+        window.removeEventListener('scroll', handleScroll);
+      });
+  
+      return {
+        mainButton,
+        fixedButton,
+        title,
+      };
+    },
+  };
+  </script>
+  
+  <style lang="scss" scoped>
+  @import '../assets/scss/vars.scss';
 
-</script>
-
-<style lang="scss" scoped>
-@import '../assets/scss/vars.scss';
-
-.header{
+  
+  html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .header {
     display: flex;
     text-align: center;
     padding: 200px 0 100px 0;
-    background-color: #fff;  
-}
-
-.container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.hero{
+    background-color: #fff;
+  }
+  
+  .container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  .hero {
     text-align: center;
     padding: 200px 0 100px 0;
-    background-color: #fff;  
-}
-
-.life_style_img {
+    background-color: #fff;
+  }
+  
+  .life_style_img {
     background-size: cover;
     background-position: center;
-    max-width: 100%;
-    margin: 0 auto ;
-}
-
-h1{
+    margin: 0 auto;
+  }
+  
+  h1 {
+    padding: 0 30px;
     font-size: 60px;
     margin-bottom: 20px;
-}
-
-h2{
+  }
+  
+  h2 {
     margin-bottom: 20px;
     line-height: 1.4;
     font-size: 1.5em;
     font-weight: 700;
-}
+  }
 
 p{
     padding: 0 30px;
