@@ -98,8 +98,10 @@
         </div>
       </div>
     </section>
-    <button class="fixed-button" ref="fixedButton">Start for free!</button>
-    <section class="reviews">
+    <div :style="{ height: '69px' }">
+      <button class="fixed-button" :class="{ static: isVisibleReviewSection, show: showButton }" ref="fixedButton">Start for free!</button>
+    </div>
+    <section ref="reviewsContainerRef" class="reviews">
       <div class="container reviews_container">
         <h2>What our users say</h2>
         <div class="review_section">
@@ -124,32 +126,24 @@
     </section>
   </template>
   
-  <script lang="ts">
+  <script setup lang="ts">
   import { ref, onMounted, onBeforeUnmount } from 'vue';
   
-  export default {
-    name: 'HeroSection',
-    setup() {
       const mainButton = ref<HTMLElement | null>(null);
       const fixedButton = ref<HTMLElement | null>(null);
+      const reviewsContainerRef = ref<HTMLDivElement | null>(null)
+      const isVisibleReviewSection = ref<boolean>(false)
+      const showButton = ref<boolean>(false)
+      const throttle = ref<boolean>(false)
       const title = "Organize your work and life.";
       
   
       const handleScroll = () => {
         if (mainButton.value && fixedButton.value) {
           const rect = mainButton.value.getBoundingClientRect();
-          const isButtonVisible = rect.top >= 0 && rect.bottom <= window.innerHeight;
-  
-          if (isButtonVisible) {
-            fixedButton.value.classList.remove('show');
-            fixedButton.value.classList.add('hide');
-          } else {
-            fixedButton.value.classList.remove('hide');
-            fixedButton.value.classList.add('show');
-          }
+          showButton.value = rect.top <= 0
         }
       };
-  
       onMounted(() => {
         window.addEventListener('scroll', handleScroll);
       });
@@ -157,14 +151,25 @@
       onBeforeUnmount(() => {
         window.removeEventListener('scroll', handleScroll);
       });
-  
-      return {
-        mainButton,
-        fixedButton,
-        title,
-      };
-    },
-  };
+
+      onMounted(() => {
+        const cb = (entries: IntersectionObserverEntry[]) => {
+        if(throttle.value) {
+          return
+        }
+        throttle.value = true
+        setTimeout(() => (throttle.value = false), 100)
+        entries.forEach((entry: IntersectionObserverEntry) => {
+          isVisibleReviewSection.value = entry.isIntersecting
+        })
+      }
+
+      const observer = new IntersectionObserver(cb, { root: null, rootMargin: '0px', threshold: 0 })
+      if(reviewsContainerRef.value) {
+        observer.observe(reviewsContainerRef.value)
+      }
+      })
+
   </script>
   
   <style lang="scss" scoped>
@@ -264,6 +269,9 @@ p{
     transition: opacity 2s ease-in-out, visibility 0s 2s;
     opacity: 0;
     visibility: hidden;
+}
+.fixed-button.static {
+  position: relative;
 }
 
 .hero:nth-of-type(2){
