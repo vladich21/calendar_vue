@@ -50,8 +50,8 @@
           </ul>
         </nav>
     </div>
+    <p class="copyright_p">© 2024 Copyright: Calendar. All rights reserved. Rus Patent 11,144,854</p>
 </footer>
-<p class="copyright_p">© 2024 Copyright: Calendar. All rights reserved. Rus Patent 11,144,854</p>
   </template>
   
   <script lang="ts">
@@ -68,7 +68,7 @@
   
   <style scoped>
   .footer {
-    padding: 70px 0;
+    padding: 70px 30px 0 30px;
     background-color: #333;
     color: #fff;
   }
@@ -82,6 +82,7 @@
     display: flex;
     gap: 80px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
   .footer-nav {
@@ -95,19 +96,22 @@ h1{
     font-size: 20px;
     border-bottom: 2px solid #fff; 
 }
-  .footer-nav li {
+  
+  .footer-nav li a:link {
+    color: #fff;
+    text-decoration: none;
     margin: 0;
     line-height: 25px;
   }
-  
-  .footer-nav a {
-    color: #fff;
-    text-decoration: none;
+  .footer-nav li a:visited {
+    color: #a7a7a7;
   }
   
-  .footer-nav a:hover {
+  .footer-nav li a:hover {
+    color: #fff;
     text-decoration: underline;
   }
+  
   .social-media {
     display: flex;
     flex-direction: column;
@@ -121,23 +125,22 @@ h1{
     display: flex;
     gap: 10px;
 }
- a {
-    margin-bottom: 30px;
-    color: #fff;
-  }
-
+ul img{
+  cursor: pointer;
+}
   .img_calendar{
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-bottom: 50px;
     gap: 10px;
+    cursor: pointer;
   }
 .img_calendar_p{
   margin: 0;
   }
   .copyright_p {
-    padding: 24px;
+    padding: 25px 0 15px 0;
     text-align: center;
     background-color: #333;
    color: #ffffff;;
