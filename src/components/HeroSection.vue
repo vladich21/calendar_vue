@@ -23,8 +23,8 @@
         <img loading="lazy" src="../assets/img/svg/Spotify.svg" alt="netflix" height="100" width="80" decoding="async" class="logo">
         <img loading="lazy" src="../assets/img/svg/netflix.svg" alt="netflix" height="100" width="80" decoding="async" class="logo">
         <img loading="lazy" src="../assets/img/svg/google_hero.svg" alt="google" height="100" width="80" decoding="async" class="logo">
-        <img loading="lazy" src="../assets/img/svg/wework.svg" alt="wework" height="100" width="180" decoding="async" class="logo">
-        <img loading="lazy" src="../assets/img/svg/yandex_hero.svg" alt="yandex" height="100" width="180" decoding="async" class="logo">
+        <img loading="lazy" src="../assets/img/svg/wework.svg" alt="wework" height="100" width="180" decoding="async" class="logoL">
+        <img loading="lazy" src="../assets/img/svg/yandex_hero.svg" alt="yandex" height="100" width="180" decoding="async" class="logoL">
       </div>
     </section>
     <section class="tasks">
@@ -42,7 +42,7 @@
             <li>Setting deadlines will help in achieving the goal.</li>
             <li>Collaborate as a team on one to-do list and share them with others.</li>
           </ul>
-          <img src="../assets/img/my_day.png" alt="App" class="to_do_list_img" width="65%">
+          <img src="../assets/img/my_day.png" alt="App" class="to_do_list_img">
         </div>
       </div>
     </section>
@@ -54,12 +54,12 @@
           <div class="img-container_myDay">
             <ul>
             <h2>Possibilities</h2>
-            <li>Organize all your to-dos into lists <br> and projects</li>
+            <li>Organize all your to-dos into lists and projects</li>
             <li>Color code them to help you prioritize.</li>
-            <li>Setting deadlines will help in achieving <br> the goal.</li>
-            <li>Collaborate as a team on one to-do<br> list and share them with others.</li>
+            <li>Setting deadlines will help in achieving the goal.</li>
+            <li>Collaborate as a team on one to-do list and share them with others.</li>
           </ul>
-            <img src="../assets/img/my_day.png" alt="App" class="myDay_img" width="65%">
+            <img src="../assets/img/my_day.png" alt="App" class="myDay_img">
           </div>
         </div>
       </div>
@@ -72,12 +72,12 @@
           <div class="img-container_sevenDays">
             <ul>
               <h2>Possibilities</h2>
-              <li class="sevenDays_li">Organize all your to-dos into lists and projects</li>
-              <li class="sevenDays_li">Color code them to help you prioritize.</li>
-              <li class="sevenDays_li">Setting deadlines will help you progress towards your goals.</li>
-              <li class="sevenDays_li">Collaborate as a team on one to-do list and share them with others</li>
+              <li>Organize all your to-dos into lists and projects</li>
+              <li>Color code them to help you prioritize.</li>
+              <li>Setting deadlines will help you progress towards your goals.</li>
+              <li>Collaborate as a team on one to-do list and share them with others</li>
             </ul>
-            <img src="../assets/img/7 days.png" alt="App" class="sevenDays_img" width="65%">
+            <img src="../assets/img/7 days.png" alt="App" class="sevenDays_img">
           </div>
         </div>
       </div>
@@ -90,12 +90,12 @@
           <div class="img-container_calendar">
             <ul>
               <h2>Possibilities</h2>
-              <li class="calendar_li">Organize all your to-dos into lists and projects</li>
-              <li class="calendar_li">Color code them to help you prioritize.</li>
-              <li class="calendar_li">Setting deadlines will help you progress towards your goals.</li>
-              <li class="calendar_li">Collaborate as a team on one to-do list and share them with others</li>
+              <li>Organize all your to-dos into lists and projects</li>
+              <li>Color code them to help you prioritize.</li>
+              <li>Setting deadlines will help you progress towards your goals.</li>
+              <li>Collaborate as a team on one to-do list and share them with others</li>
             </ul>
-            <img src="../assets/img/calendar.png" alt="App" class="calendar_img" width="65%">
+            <img src="../assets/img/calendar.png" alt="App" class="calendar_img">
           </div>
         </div>
       </div>
@@ -278,7 +278,9 @@ p{
 .hero:nth-of-type(2){
     padding: 0 0;
 }
-
+.company{
+  justify-content: center;
+}
 .clients_logos {
     display: flex;
     flex-wrap: wrap;
@@ -343,7 +345,9 @@ p{
 
 .to_do_list_img {
     max-width: 100%;
+    width: 65%;
     height: auto;
+    margin-left: 30px;
     box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.21);
 }
 ul {
@@ -402,6 +406,8 @@ ul li {
 
 .myDay_img {
     max-width: 100%;
+    width: 65%;
+    margin-left: 30px;
     height: auto;
     box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.21);
 }
@@ -412,6 +418,8 @@ ul li {
 }
 .sevenDays_img{
     max-width: 100%;
+    width: 65%;
+    margin-left: 30px;
     height: auto;
     box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.21);
 }
@@ -434,6 +442,8 @@ ul li {
 }
 .calendar_img{
     max-width: 100%;
+    width: 65%;
+    margin-left: 30px;
     height: auto;
     box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.21);
 }
@@ -498,6 +508,7 @@ ul::before{
 }
 .to_do_list_img{
    width: 90%;
+   margin: 0;
    margin-bottom: 80px;
 }
 
@@ -506,6 +517,7 @@ ul::before{
 }
 .myDay_img{
   width: 90%;
+  margin: 0;
   margin-bottom: 80px;
 }
 .img-container_sevenDays{
@@ -513,6 +525,7 @@ ul::before{
 }
 .sevenDays_img{
   width: 90%;
+  margin: 0;
   margin-bottom: 80px;
 }
 .img-container_calendar{
@@ -520,6 +533,7 @@ ul::before{
 }
 .calendar_img{
   width: 90%;
+  margin: 0;
   margin-bottom: 80px;
 }
 }
@@ -557,9 +571,10 @@ ul::before{
     align-items: center;
     padding: 30px 50px;
 }
-.myDay_img{
-  margin-bottom: 80px;
-}
+// .myDay_img{
+//   width: 90%;
+//   margin-bottom: 80px;
+// }
 .img-container_sevenDays{
     display: flex;
     flex-direction: column-reverse;
@@ -567,9 +582,7 @@ ul::before{
     align-items: center;
     padding: 30px 50px;
 }
-.sevenDays_img{
-  margin-bottom: 80px;
-}
+
 .img-container_calendar{
     display: flex;
     flex-direction: column-reverse;
@@ -577,18 +590,25 @@ ul::before{
     align-items: center;
     padding: 30px 50px;
 }
-.calendar_img{
-  margin-bottom: 80px;
-}
+
 }
 
 @media (max-width: 768px) {
     .header{
-        // display: flex;
-        // flex-direction: column;
         text-align: center;
-        padding: 200px 0 100px 0;
+        padding: 150px 0 60px 0;
         background-color: #fff;  
+}
+.clients_logos{
+  gap: 0;
+}
+.logo{
+    width: 60px;
+    height: 60px;
+}
+.logoL{
+  width: 100px;
+  height: 80px;
 }
 .life_style_img{
   width: 40%;
@@ -607,10 +627,28 @@ p{
   font-size: 16px;
   padding: 15px 25px;
 }
+.to_do_list_container{
+  padding: 50px 0 30px 0;
+}
 .img-container_possibilities {
     padding: 20px;
   }
+  .myDay_container{
+    padding-bottom: 30px;
+  }
+.img-container_myDay{
+  padding: 20px;
+}
+.sevenDays_container{
+  padding-bottom: 30px;
+}
+.img-container_sevenDays{
+  padding: 20px;
+}
 
+.img-container_calendar{
+  padding: 20px;
+}
   h2{
     font-size: 20px;
   }
@@ -634,6 +672,18 @@ ul {
     font-size: 14px;
     width: 250px;
     padding: 8px 0 8px 30px;
+  }
+  .to_do_list_img{
+    width: 100%;
+  }
+  .myDay_img{
+  width: 100%;
+  }
+  .sevenDays_img{
+    width: 100%;
+  }
+  .calendar_img{
+    width: 100%;
   }
 }
 @media (max-width: 480px) {

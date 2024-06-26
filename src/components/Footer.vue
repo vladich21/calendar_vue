@@ -111,7 +111,7 @@ h1{
     color: #fff;
     text-decoration: underline;
   }
-  
+
   .social-media {
     display: flex;
     flex-direction: column;
@@ -145,6 +145,11 @@ ul img{
     background-color: #333;
    color: #ffffff;;
 }
-
+@media (max-width: 425px) {
+.nav_disp_flex{
+  gap: 0;
+  justify-content: space-around;
+}
+}
   </style>
   
