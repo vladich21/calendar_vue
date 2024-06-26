@@ -3,8 +3,8 @@
     <div class="app">
       <header class="header">
         <div class="container">
-          <img src="../assets/img/svg/calendar.svg" alt="Calendar" class="logo" />
           <nav>
+            <img src="../assets/img/svg/calendar.svg" alt="Calendar" class="logo" />
             <ul :class="{ open: isBurgerOpen }">
               <li :class="{ dropdown: true, open: isDropdownOpen }" @click="toggleDropdown" ref="dropdownRef">
                 <a href="#">
@@ -35,6 +35,7 @@
   </template>
   
   <script setup lang="ts">
+
   import { ref, onMounted, onBeforeUnmount } from 'vue'
   
   const isDropdownOpen = ref(false)
@@ -74,16 +75,27 @@
   </script>
   
   <style lang="scss" scoped>
+  * {
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
   .app {
-    width: 100%;
     position: fixed;
       z-index: 1000;
-  
+  }
     .header {
+      width: 100vw;
+      display: flex;
+      justify-content: center;
       background-color: #fff;
       padding: 30px 30px;
       border-bottom: 1px solid #ddd;
-  
+    
+    }
       .container {
         display: flex;
         justify-content: space-between;
@@ -188,7 +200,7 @@
         background: none;
         border: 2px solid #0c21c1;
       }
-    }
+    
   
     .background {
       position: absolute;
@@ -209,11 +221,12 @@
     padding-top: 50px;
     background-color: #fff;
     align-items: center;
- 
   }
+
   .header nav ul.open {
     display: flex;
   }
+
   .header nav ul .dropdown .dropdown-content {
            margin-top: 30px; 
   }
@@ -238,6 +251,4 @@
     display: none;
   }
 }
-  }
   </style>
-  
