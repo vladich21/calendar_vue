@@ -121,6 +121,9 @@ h1{
     width: 35px;
     height: 35px;
   }
+  .social-media a {
+    margin-bottom: 10px;
+  }
 .social{
     display: flex;
     gap: 10px;

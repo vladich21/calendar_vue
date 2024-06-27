@@ -109,7 +109,7 @@ body, html {
   
       nav {
         flex-grow: 1;
-        justify-content: flex-end;
+        justify-content: space-between;
         align-items: center;
         display: flex;
         position: relative;
@@ -138,8 +138,8 @@ body, html {
               position: absolute;
               background-color: #f9f9f9;
               padding: 25px 18px;
-              width: 120px;
-              height: 100px;
+              width: 150px;
+              height: 150px;
               box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.21);
               border-radius: 32px;
               left: 50%;
@@ -211,16 +211,16 @@ body, html {
   
     @media (max-width: 1000px) {
   .header nav ul {
-    display: none;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding-top: 50px;
-    background-color: #fff;
-    align-items: center;
+  display: none;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding-top: 50px;
+  background-color: #fff;
+  align-items: center;
   }
 
   .header nav ul.open {
@@ -228,17 +228,17 @@ body, html {
   }
 
   .header nav ul .dropdown .dropdown-content {
-           margin-top: 30px; 
+    margin-top: 30px; 
   }
 
   .burger {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    z-index: 9990;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  z-index: 9990;
     
     span {
       width: 100%;
@@ -248,7 +248,7 @@ body, html {
   }
 
   .home_btn {
-    display: none;
+  display: none;
   }
 }
   </style>
