@@ -163,7 +163,7 @@ const possibilities = [
   "Organize all your to-dos into lists and projects.",
   "Color code to help you prioritize.",
   "Setting deadlines will help you progress towards your goals.",
-  "Collaborate as a team on one to-do list and share them with others"
+  "Collaborate as a team on one to-do list and share them with others."
 ];
 const possibilities_Day = [
   "Ability to easily edit, add and delete tasks.",
