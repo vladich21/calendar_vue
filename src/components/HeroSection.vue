@@ -3,7 +3,7 @@
       <div class="container">
         <div class="header_element">
           <h1 class="anim_h1 _anim-items">{{ title }}</h1>
-          <p class="anim_p _anim-items">Simple and universal task planning for any of your tasks: manage your time and effectively achieve your goals.</p>
+          <p class="anim_p _anim-items">{{ subtitle }}</p>
           <button 
           class="button" 
           ref="mainButton" 
@@ -15,33 +15,37 @@
     </section>
     <section class="hero">
       <div class="user">
-        <h2>Join thousands highly effective individuals, families and teams</h2>
+        <h2>{{ textUser }}</h2>
       </div>
     </section>
     <section class="company">
       <div class="user clients_logos">
-        <img loading="lazy" src="../assets/img/svg/Spotify.svg" alt="netflix" height="100" width="80" decoding="async" class="logo">
-        <img loading="lazy" src="../assets/img/svg/netflix.svg" alt="netflix" height="100" width="80" decoding="async" class="logo">
-        <img loading="lazy" src="../assets/img/svg/google_hero.svg" alt="google" height="100" width="80" decoding="async" class="logo">
-        <img loading="lazy" src="../assets/img/svg/wework.svg" alt="wework" height="100" width="180" decoding="async" class="logoL">
-        <img loading="lazy" src="../assets/img/svg/yandex_hero.svg" alt="yandex" height="100" width="180" decoding="async" class="logoL">
+        <img
+        v-for="logo in logos"
+        :key="logo.alt"
+        loading="lazy"
+        :src="logo.src"
+        :alt="logo.alt"
+        :height="logo.height"
+        :width="logo.width"
+        decoding="async"
+        :class="logo.class"
+      >
       </div>
     </section>
     <section class="tasks">
       <div class="to_do_list_container">
         <div class="to_do_list">
           <h3>To do list</h3>
-          <p class="p_first">Now you don't have to keep everything in your head. </p>
-          <p class="p_second">A to-do list easily helps you organize your time and achieve your goals.</p>
+          <p class="p_first">{{ todolistTextFirst }} </p>
+          <p class="p_second">{{ todolistTextSecond }}</p>
         </div>
+        <p style="color: red;">Заменить изображение, добавить больше задач</p>
         <div class="img-container_possibilities">
         <div class="table__checkMark">
             <h2>Possibilities</h2>
             <ul class="animated-list _anim-items">
-              <li>Organize all your to-dos into lists and projects</li>
-              <li>Color code them to help you prioritize.</li>
-              <li>Setting deadlines will help in achieving the goal.</li>
-              <li>Collaborate as a team on one to-do list and share them with others.</li>
+              <li v-for="possibility in possibilities" :key="possibility">{{ possibility }}</li>
             </ul>
           </div>
           <img src="../assets/img/my_day.png" alt="App" class="to_do_list_img">
@@ -52,15 +56,12 @@
       <div class="myDay_container">
         <div class="Day">
           <h3>My day</h3>
-          <p>My Day is a convenient tool for planning and organizing your work time and personal affairs.</p>
+          <p>{{  myDayText }}</p>
           <div class="img-container_myDay">
             <div class="table__checkMark">
               <h2>Possibilities</h2>
               <ul class="animated-list _anim-items">
-              <li>Organize all your to-dos into lists and projects</li>
-              <li>Color code them to help you prioritize.</li>
-              <li>Setting deadlines will help in achieving the goal.</li>
-              <li>Collaborate as a team on one to-do list and share them with others.</li>
+                <li v-for="possibility in possibilities_Day" :key="possibility">{{ possibility }}</li>
             </ul>
             </div>
             <img src="../assets/img/my_day.png" alt="App" class="myDay_img">
@@ -72,15 +73,12 @@
       <div class="sevenDays_container">
         <div class="sevenDay">
           <h3>7 days</h3>
-          <p>My Day is a convenient tool for planning and organizing your work time and personal affairs.</p>
+          <p>{{ sevenDaysText }}</p>
           <div class="img-container_sevenDays">
             <div class="table__checkMark">
               <h2 >Possibilities</h2>
               <ul class="animated-list _anim-items">
-                <li>Organize all your to-dos into lists and projects</li>
-                <li>Color code them to help you prioritize.</li>
-                <li>Setting deadlines will help you progress towards your goals.</li>
-                <li>Collaborate as a team on one to-do list and share them with others</li>
+                <li v-for="possibility in possibilities_sevenDays" :key="possibility">{{ possibility }}</li>
               </ul>
             </div>
             <img src="../assets/img/7 days.png" alt="App" class="sevenDays_img">
@@ -92,15 +90,12 @@
       <div class="calendar_container">
         <div class="calend">
           <h3>Calendar</h3>
-          <p>My Day is a convenient tool for planning and organizing your work time and personal affairs.</p>
+          <p>{{ calendarText }}</p>
           <div class="img-container_calendar">
             <div class="table__checkMark">
               <h2>Possibilities</h2>
               <ul class="animated-list _anim-items">
-                <li>Organize all your to-dos into lists and projects</li>
-                <li>Color code them to help you prioritize.</li>
-                <li>Setting deadlines will help you progress towards your goals.</li>
-                <li>Collaborate as a team on one to-do list and share them with others</li>
+                <li v-for="possibility in possibilities_calendar" :key="possibility">{{ possibility }}</li>
               </ul>
             </div>
             <img src="../assets/img/calendar.png" alt="App" class="calendar_img">
@@ -116,19 +111,19 @@
         <h2>What our users say</h2>
         <div class="review_section">
           <div class="review">
-            <p>"This app has transformed the way I organize my life. Highly recommend it!"</p>
+            <p>{{ reviewOne }}</p>
             <p>- Sarah L.</p>
           </div>
         </div>
         <div class="review_section">
           <div class="review">
-            <p>"Simple, intuitive, and effective. Exactly what I needed to stay on top of my tasks."</p>
+            <p>{{ reviewTwo }}</p>
             <p>- Mark R.</p>
           </div>
         </div>
         <div class="review_section">
           <div class="review">
-            <p>"A fantastic tool for team collaboration and task management. Couldn't live without it."</p>
+            <p>{{ reviewThree }}</p>
             <p>- Emily W.</p>
           </div>
         </div>
@@ -137,7 +132,13 @@
   </template>
   
   <script setup lang="ts">
-  import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import spotify from '@/assets/img/svg/Spotify.svg';
+import netflix from '@/assets/img/svg/netflix.svg';
+import google from '@/assets/img/svg/google_hero.svg';
+import wework from '@/assets/img/svg/wework.svg';
+import yandex from '@/assets/img/svg/yandex_hero.svg';
+
 
 const mainButton = ref<HTMLElement | null>(null);
 const fixedButton = ref<HTMLElement | null>(null);
@@ -145,7 +146,49 @@ const reviewsContainerRef = ref<HTMLDivElement | null>(null)
 const isVisibleReviewSection = ref<boolean>(false)
 const showButton = ref<boolean>(false)
 const throttle = ref<boolean>(false)
-const title = "Organize your work and life.";
+const title = "Organize your work and life";
+const subtitle = "Simple and universal task planning for any of your tasks: manage your time and effectively achieve your goals.";
+const textUser = "Join thousands highly effective individuals, families and teams";
+const todolistTextFirst = "Now you don't have to keep everything in your head.";
+const todolistTextSecond = "A to-do list easily helps you organize your time and achieve your goals.";
+const myDayText = "My Day is a convenient tool for planning and organizing your work time and personal affairs.";
+const sevenDaysText = "Planning 7 days ahead allows you to effectively distribute tasks, providing a structured approach to achieving your weekly goals.";
+const calendarText = "My Day is a convenient tool for planning and organizing your work time and personal affairs.";
+const reviewOne = "This app has transformed the way I organize my life. Highly recommend it!";
+const reviewTwo = "Simple, intuitive, and effective. Exactly what I needed to stay on top of my tasks.";
+const reviewThree = "A fantastic tool for team collaboration and task management. Couldn't live without it.";
+
+
+const possibilities = [
+  "Organize all your to-dos into lists and projects.",
+  "Color code to help you prioritize.",
+  "Setting deadlines will help you progress towards your goals.",
+  "Collaborate as a team on one to-do list and share them with others"
+];
+const possibilities_Day = [
+  "Ability to easily edit, add and delete tasks.",
+  "Convenient interface for solving your problems.",
+  "Having a clear understanding of your daily tasks and priorities increases productivity.",
+  "Wide variety of sorting types."
+];
+const possibilities_sevenDays = [
+  "Reviewing tasks for the week ahead helps in more effective planning.",
+  "Easily changing the task between days of the week allows you to adapt to changing circumstances and new priorities.",
+  "A clean and simple design makes the app enjoyable to use and reduces visual clutter.",
+];
+const possibilities_calendar = [
+  "It's easy to mark important events so you don't miss important things.",
+  "The small calendar allows you to quickly navigate through the months and select a specific month, week or day for easy navigation.",
+  "A clear division of days and weeks helps to quickly assess the amount of work."
+];
+
+const logos = [
+{ src: spotify, alt: "spotify", height: 100, width: 80, class: "logo" },
+  { src: netflix, alt: "netflix", height: 100, width: 80, class: "logo" },
+  { src: google, alt: "google", height: 100, width: 80, class: "logo" },
+  { src: wework, alt: "wework", height: 100, width: 180, class: "logoL" },
+  { src: yandex, alt: "yandex", height: 100, width: 180, class: "logoL" }
+];
 
 let animItems: NodeListOf<Element>;
 
