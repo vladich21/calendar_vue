@@ -36,7 +36,7 @@
     <section class="tasks">
       <div class="to_do_list_container">
         <div class="to_do_list">
-          <h3>To do list</h3>
+          <h3 id="todolist">To do list</h3>
           <p class="p_first">{{ todolistTextFirst }} </p>
           <p class="p_second">{{ todolistTextSecond }}</p>
         </div>
@@ -45,7 +45,10 @@
         <div class="table__checkMark">
             <h2>Possibilities</h2>
             <ul class="animated-list _anim-items">
-              <li v-for="possibility in possibilities" :key="possibility">{{ possibility }}</li>
+              <li 
+              v-for="possibility in possibilities" 
+              :key="possibility">{{ possibility }}
+            </li>
             </ul>
           </div>
           <img src="../assets/img/my_day.png" alt="App" class="to_do_list_img">
@@ -55,13 +58,16 @@
     <section class="myDay">
       <div class="myDay_container">
         <div class="Day">
-          <h3>My day</h3>
+          <h3 id="MyDay">My day</h3>
           <p>{{  myDayText }}</p>
           <div class="img-container_myDay">
             <div class="table__checkMark">
               <h2>Possibilities</h2>
               <ul class="animated-list _anim-items">
-                <li v-for="possibility in possibilities_Day" :key="possibility">{{ possibility }}</li>
+                <li 
+                v-for="possibility in possibilities_Day" 
+                :key="possibility">{{ possibility }}
+              </li>
             </ul>
             </div>
             <img src="../assets/img/my_day.png" alt="App" class="myDay_img">
@@ -72,13 +78,16 @@
     <section class="sevenDays">
       <div class="sevenDays_container">
         <div class="sevenDay">
-          <h3>7 days</h3>
+          <h3 id="7Days">7 days</h3>
           <p>{{ sevenDaysText }}</p>
           <div class="img-container_sevenDays">
             <div class="table__checkMark">
               <h2 >Possibilities</h2>
               <ul class="animated-list _anim-items">
-                <li v-for="possibility in possibilities_sevenDays" :key="possibility">{{ possibility }}</li>
+                <li 
+                v-for="possibility in possibilities_sevenDays" 
+                :key="possibility">{{ possibility }}
+              </li>
               </ul>
             </div>
             <img src="../assets/img/7 days.png" alt="App" class="sevenDays_img">
@@ -89,13 +98,15 @@
     <section class="calendar">
       <div class="calendar_container">
         <div class="calend">
-          <h3>Calendar</h3>
+          <h3 id="Calendar">Calendar</h3>
           <p>{{ calendarText }}</p>
           <div class="img-container_calendar">
             <div class="table__checkMark">
               <h2>Possibilities</h2>
               <ul class="animated-list _anim-items">
-                <li v-for="possibility in possibilities_calendar" :key="possibility">{{ possibility }}</li>
+                <li 
+                v-for="possibility in possibilities_calendar" 
+                :key="possibility">{{ possibility }}</li>
               </ul>
             </div>
             <img src="../assets/img/calendar.png" alt="App" class="calendar_img">
@@ -104,7 +115,10 @@
       </div>
     </section>
     <div :style="{ height: '69px' }">
-      <button class="fixed-button" :class="{ static: isVisibleReviewSection, show: showButton }" ref="fixedButton">Start for free!</button>
+      <button class="fixed-button" 
+      :class="{ static: isVisibleReviewSection, show: showButton }" 
+      ref="fixedButton">Start for free!
+    </button>
     </div>
     <section ref="reviewsContainerRef" class="reviews">
       <div class="reviews_container">
@@ -146,6 +160,7 @@ const reviewsContainerRef = ref<HTMLDivElement | null>(null)
 const isVisibleReviewSection = ref<boolean>(false)
 const showButton = ref<boolean>(false)
 const throttle = ref<boolean>(false)
+
 const title = "Organize your work and life";
 const subtitle = "Simple and universal task planning for any of your tasks: manage your time and effectively achieve your goals.";
 const textUser = "Join thousands highly effective individuals, families and teams";
@@ -414,7 +429,7 @@ p{
   flex-direction: column;
 }
 
- h3 {
+h3 {
   font-size: 50px;
   font-weight: 700;
   text-align: center;
@@ -424,6 +439,9 @@ p{
   width: 400px;
   height: 70px;
   margin-bottom: 40px;
+  position: relative;
+  padding-top: 100px; /* Высота фиксированного меню */
+  margin-top: -100px; /* Высота фиксированного меню */
 }
 
 .p_first {
@@ -707,66 +725,84 @@ ul::before{
 }
 
 @media (max-width: 768px) {
+  
 .header{
   text-align: center;
   padding: 150px 0 60px 0;
   background-color: #fff;  
 }
+
 .clients_logos{
   gap: 0;
 }
+
 .logo{
   width: 60px;
   height: 60px;
 }
+
 .logoL{
   width: 100px;
   height: 80px;
 }
+
 .life_style_img{
   width: 40%;
 }
+
 .anim_h1{
   font-size: 40px;
 }
+
 .anim_p {
   font-size: 14px;
 }
+
 .animated-list li {
   transform: translate(-150%, 0px);
 }
+
 .button{
   font-size: 16px;
   padding: 15px 25px;
 }
+
 .fixed-button{
   font-size: 16px;
   padding: 15px 25px;
 }
+
 .to_do_list_container{
   padding: 50px 0 30px 0;
 }
+
 h3 {
   font-size: 40px;
   line-height: 40px;
   width: 300px;
   height: 50px;
 }
+
 .p_first{
   font-size: 14px;
 }
+
 .p_second{
   font-size: 14px;
 }
+
 .img-container_possibilities {
   padding: 20px;
 }
-  .myDay_container{
+
+.myDay_container{
     padding-bottom: 30px;
   }
+
 .img-container_myDay{
   padding: 20px;
 }
+
 p{
   font-size: 14px;
 }
@@ -780,7 +816,8 @@ p{
 .img-container_calendar{
   padding: 20px;
 }
-  h2{
+
+h2{
     font-size: 16px;
   }
 ul {
@@ -815,9 +852,11 @@ ul {
   .anim_h1{
     font-size: 30px;
   }
+
   .life_style_img{
     width: 50%;
   }
+
   h2{
     padding-left: 10px;
   }
@@ -826,6 +865,7 @@ ul {
     width: 320px;
     height: 260px;
   }
+
   .table__checkMark::before {
   width: 335px; 
   height: 291px;
@@ -835,6 +875,7 @@ ul {
   z-index: -1;
   clip-path: inset(-8px -11px -10px -8px);
   }
+
   h3 {
   font-size: 35px;
   line-height: 40px;
@@ -842,15 +883,18 @@ ul {
   width: 300px;
   height: 50px;
   }
+
 ul {
   height: 278px;
 }
+
   ul::before {
   width: 341px;
   height: 296px;
   top: 50%;
   clip-path: inset(-1px -11px -10px -8px);
   }
+
   .animated-list li {
   position: relative;
   font-size: 14px;
