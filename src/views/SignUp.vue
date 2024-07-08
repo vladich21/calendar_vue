@@ -54,6 +54,33 @@
               </p>
             </div>
           </div>
+          <div class="form-box__input-box input-box">
+            <label class="input-box__info" for="First_name">First Name</label>
+            <label class="input-box__icon" for="First_name">
+              <img src="@/assets/img/svg/user.svg" alt="First_name" />
+            </label>
+            <input
+              v-model="First_name"
+              type="text"
+              name="First_name"
+              id="First_name"
+              placeholder="Enter your First Name"
+              required
+            />
+          </div>
+          <div class="form-box__input-box input-box">
+            <label class="input-box__info" for="Last_name">Last Name</label>
+            <label class="input-box__icon" for="Last_name">
+              <img src="@/assets/img/svg/user.svg" alt="Last_name" />
+            </label>
+            <input
+              v-model="Last_name"
+              type="text"
+              name="Last_name"
+              id="Last_name"
+              placeholder="Enter your Last Name"
+            />
+          </div>
           <p v-if="error">{{ error }}</p>
           <div class="form-box__btn-box btn-box">
             <button id="registerButton" type="submit">Register</button>

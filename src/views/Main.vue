@@ -38,6 +38,9 @@ onBeforeMount(async () => {
   <Preloader height="30px" width="30px" class="preloader" v-if="authorizationStore.isLoading" />
   <slot v-else>
     <Sidebar />
+<section>
+  
+</section>
   </slot>
 
 </template>
