@@ -717,6 +717,11 @@ ul::before{
   justify-content: center;
   align-items: center;
   padding: 30px 50px;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 50px;
 }
 
 .img-container_sevenDays{
