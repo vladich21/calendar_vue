@@ -1,5 +1,5 @@
 <script>
-const pages = ['sign-up', 'sign-in', 'header']
+const pages = ['sign-up', 'sign-in', 'header',]
 
 export default {
 
@@ -22,7 +22,7 @@ export default {
   .wrapper {
     display: flex;
     height: 100%;
-  width: 100%;
+    width: 100%;
     
     &._align-center {
       justify-content: center;
