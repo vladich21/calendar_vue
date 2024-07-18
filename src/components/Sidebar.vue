@@ -100,7 +100,7 @@ export default {
 
     & svg {
       position: relative;
-      top: -3px;
+      top: 3px;
       left: -3px;
     }
 

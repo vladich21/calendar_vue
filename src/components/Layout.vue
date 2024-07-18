@@ -1,5 +1,5 @@
 <script>
-const pages = ['sign-up', 'sign-in', 'header']
+const pages = ['sign-up', 'sign-in', 'header',]
 
 export default {
 
