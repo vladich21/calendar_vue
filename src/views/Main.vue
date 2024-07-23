@@ -14,65 +14,77 @@
         <div class="date">Mon <br> 6 <br> May</div> 
       </div>
       <div class="calendar__actions">
-        <button>
-          <span>
-            <Printer />
-            Print
-          </span>
+        <button class="task_button" @click="toggleTooltip(task, 'printer')">
+          <Printer />
+          <div class="tooltiptext">Printer</div>
         </button>
-        <button>
-          <span>
-            <Grid />
-            Grid
-          </span>
+        <button class="task_button" @click="toggleTooltip(task, 'grid')">
+          <Grid />
+          <div class="tooltiptext">Grid</div>
         </button>
-        <button>
-          <span>
-            <img src="@/assets/img/svg/list.svg" alt="list">
-            List
-          </span>
+        <button class="task_button" @click="toggleTooltip(task, 'list')">
+          <img src="@/assets/img/svg/list.svg" alt="list">
+          <div class="tooltiptext">List</div>
         </button>
         <div class="sorting">
-          <button>
-            <span>
-              <img src="@/assets/img/svg/Sorting.svg" alt="">
-              Sorting
-            </span>
+          <button class="task_button" @click="toggleTooltip(task, 'sorting')">
+            <img src="@/assets/img/svg/Sorting.svg" alt="">
+            <div class="tooltiptext">Sorting</div>
           </button>
         </div>
       </div>
     </div>
     <div class="tasks">
-      <input class="add-task" type="text" placeholder="+ Add task" value="{{ taskName }}" 
-      v-model="taskName"
+      <input 
+        class="add-task" 
+        type="text" 
+        placeholder="+ Add task" 
+        v-model="taskName"
+        @keyup.enter="addTask"
       />
       <button @click="addTask" class="add-task_button">+</button>
     </div>
     <div class="tasks_new">
       <div 
-      class="task" v-for="task in tasks" 
-      :key="task._id" 
-      :class="{ completed: task.isCompleted }"
-      @click="() => completedHandler(task._id)">
+        class="task" 
+        v-for="task in tasks" 
+        :key="task._id" 
+        :class="{ completed: task.isCompleted }"
+        @click.stop="completedHandler(task._id)"
+      >
         <div class="task_left">
-          <div class="round"
-          :class="{
-            business:task.type === 'business',
-            personal:task.type === 'personal',
-          }"
-           ></div>
-          <span>{{ task.name }}</span>
+          <div 
+            class="round"
+            :class="{
+              business: task.type === 'business',
+              personal: task.type === 'personal',
+            }"
+          ></div>
+          <span 
+            v-if="editingTaskId !== task._id"
+            @dblclick="editTask(task._id)"
+            
+          >{{ task.name }}</span>
+          <input 
+          v-else
+          ref="taskInput"
+          type="text"
+          v-model="task.name"
+          @blur="updateTaskName(task._id)"
+          @keyup.enter="updateTaskName(task._id)"
+          :ref="el => taskInputs.value[task._id] = el"
+          />
         </div>
         <div class="task_options">
-          <button class="task_button" @click="() => toggleTooltip(task)">
+          <button class="task_button" @click.stop="editTask(task._id)">
             <img src="@/assets/img/svg/edit.svg" alt="edit">
             <div class="tooltiptext">Edit</div>
           </button>
-          <button class="task_button" @click="() => toggleTooltip(task)">
+          <button class="task_button" @click="priorityTask(task._id)">
             <img src="@/assets/img/svg/pri.svg" alt="priority">
             <div class="tooltiptext">Priority</div>
           </button>
-          <button class="task_button" @click="() => toggleTooltip(task)">
+          <button class="task_button" @click="closeTask(task._id)">
             <img src="@/assets/img/svg/eee.svg" alt="exit">
             <div class="tooltiptext">Exit</div>
           </button>
@@ -83,7 +95,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onBeforeMount } from 'vue';
+import { onBeforeMount } from 'vue';
+import { ref, Ref } from 'vue';
 import { useRouter } from 'vue-router';
 import type { AxiosError } from 'axios';
 import { authMe } from '@/api/authMe';
@@ -96,14 +109,21 @@ import Printer from '@/assets/icons/Printer.vue';
 const authorizationStore = useAuthorizationStore();
 const router = useRouter();
 
-// Задачи, определенные в data функции
-const taskName = ref ('');
+interface TaskInputs {
+  [key: string]: HTMLInputElement | undefined;
+}
+const taskInputs: Ref<TaskInputs> = ref({});
+
+const taskName = ref('');
 const tasks = ref([{
   _id: 'wewewe2123',
-  name: 'Create to do ',
+  name: 'Create to do',
   isCompleted: false,
-  type: 'bussines',
+  isEditing: false,
+  type: 'business',
 }]);
+
+const editingTaskId = ref<string | null>(null);
 
 onBeforeMount(async () => {
   try {
@@ -126,30 +146,54 @@ onBeforeMount(async () => {
   }
 });
 
-// Пример функции для toggle tooltip
-function toggleTooltip(task) {
-  console.log(`Toggling tooltip for task: ${task.name}`);
-}
-
-function completedHandler(taskId) {
-  const currentTask = tasks.value.find((t) => t._id === taskId);
-  if(currentTask) {
-    currentTask.isCompleted = !currentTask.isCompleted;
-  }
+function toggleTooltip(task, type) {
+  console.log(`Toggling ${type} tooltip for task: ${task.name}`);
 }
 
 function addTask() {
-  tasks.value.push({
-    _id:Math.random(). toString(36).substring(2, 7),
-    name:taskName.value,
-    isCompleted: false,
-    type: 'personal',
-  })
-  taskName.value = '';
+  if (taskName.value.trim()) {
+    tasks.value.push({
+      _id: Date.now().toString(),
+      name: taskName.value,
+      isCompleted: false,
+      isEditing: false,
+      type: 'business', // или 'personal' в зависимости от логики
+    });
+    taskName.value = '';
+  }
 }
 
-</script>
+function completedHandler(taskId) {
+  const task = tasks.value.find(t => t._id === taskId);
+  if (task) {
+    task.isCompleted = !task.isCompleted;
+  }
+}
 
+function editTask(taskId: string) {
+  editingTaskId.value = taskId;
+  setTimeout(() => {
+    const input = taskInputs.value[taskId];
+    if (input) {
+      input.focus();
+      input.selectionStart = input.selectionEnd = input.value.length;
+    }
+  }, 0);
+}
+
+
+function updateTaskName(taskId) {
+  editingTaskId.value = null;
+}
+
+function priorityTask(taskId) {
+  console.log(`Setting priority for task: ${taskId}`);
+}
+
+function closeTask(taskId) {
+  tasks.value = tasks.value.filter(t => t._id !== taskId);
+}
+</script>
 
 <style lang="scss">
 @import '../assets/scss/vars.scss';
@@ -271,6 +315,7 @@ function addTask() {
   outline: none;
   width: 40px;
   height: 40px;
+  cursor: pointer;
   text-align: center;
   display: flex;
   justify-content: center;
