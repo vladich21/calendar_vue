@@ -464,6 +464,7 @@ h3 {
  
 }
 
+
 .to_do_list_img {
   max-width: 100%;
   width: 65%;
@@ -697,7 +698,23 @@ ul::before{
  top: 60%;
 }
 
+ul::before{
+ top: 60%;
+}
+
+ul::before{
+ top: 60%;
+}
+
+ul::before{
+ top: 60%;
+}
 .img-container_myDay{
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 50px;
   display: flex;
   flex-direction: column-reverse;
   justify-content: center;
