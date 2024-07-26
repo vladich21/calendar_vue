@@ -11,70 +11,74 @@
     </div>
     <div class="calendar">
       <div class="calendar__date">
-        <div class="date">Mon <br> 6 <br> May</div> 
+        <div class="date">Mon <br> 6 <br> May</div>
       </div>
       <div class="calendar__actions">
-        <button>
-          <span>
-            <Printer />
-            Print
-          </span>
+        <button class="task_button" @click="() => toggleTooltip(null, 'printer')"> 
+          <Printer />
+          <div class="tooltiptext">Printer</div>
         </button>
-        <button>
-          <span>
-            <Grid />
-            Grid
-          </span>
+        <button class="task_button" @click="() => toggleTooltip(null, 'grid')">
+          <Grid />
+          <div class="tooltiptext">Grid</div>
         </button>
-        <button>
-          <span>
-            <img src="@/assets/img/svg/list.svg" alt="list">
-            List
-          </span>
+        <button class="task_button" @click="() => toggleTooltip(null, 'list')">
+          <img src="@/assets/img/svg/list.svg" alt="list">
+          <div class="tooltiptext">List</div>
         </button>
         <div class="sorting">
-          <button>
-            <span>
-              <img src="@/assets/img/svg/Sorting.svg" alt="">
-              Sorting
-            </span>
+          <button class="task_button" @click="() => toggleTooltip(null, 'sorting')">
+            <img src="@/assets/img/svg/Sorting.svg" alt="">
+            <div class="tooltiptext">Sorting</div>
           </button>
         </div>
       </div>
     </div>
     <div class="tasks">
-      <input class="add-task" type="text" placeholder="+ Add task" value="{{ taskName }}" 
-      v-model="taskName"
+      <input
+        class="add-task"
+        type="text"
+        placeholder="+ Add task"
+        v-model="taskName"
+        @keyup.enter="addTask"
       />
       <button @click="addTask" class="add-task_button">+</button>
     </div>
     <div class="tasks_new">
       <div 
-      class="task" v-for="task in tasks" 
-      :key="task._id" 
-      :class="{ completed: task.isCompleted }"
-      @click="() => completedHandler(task._id)">
-        <div class="task_left">
-          <div class="round"
-          :class="{
-            business:task.type === 'business',
-            personal:task.type === 'personal',
-          }"
-           ></div>
-          <span>{{ task.name }}</span>
+        class="task" 
+        v-for="task in tasks" 
+        :key="task._id">
+        <div class="task_left"
+        :class="{ completed: task.isCompleted }">
+          <div 
+            class="round"
+            :class="{
+              completed: task.isCompleted
+            }"
+            @click="toggleTaskCompletion(task._id)"
+          ></div>
+          <span 
+            v-if="!task.isEditing"
+            @dblclick="editTask(task)"
+          >{{ task.name }}</span>
+          <input 
+            v-else
+            v-model="task.name"
+            @blur="saveTask(task)"
+            @keyup.enter="saveTask(task)"
+            class="edit-input"
+          />
         </div>
         <div class="task_options">
-          <button class="task_button" @click="() => toggleTooltip(task)">
+          <button class="task_button" @click="editTask(task)">
             <img src="@/assets/img/svg/edit.svg" alt="edit">
-            <div class="tooltiptext">Edit</div>
           </button>
-          <button class="task_button" @click="() => toggleTooltip(task)">
-            <img src="@/assets/img/svg/pri.svg" alt="priority">
-            <div class="tooltiptext">Priority</div>
+          <button class="task_button" @click="priorityTask(task._id)">
+            <img src="@/assets/img/svg/pri.svg" alt="priority">       
           </button>
-          <button class="task_button" @click="() => toggleTooltip(task)">
+          <button class="task_button" @click="closeTask(task._id)">
             <img src="@/assets/img/svg/eee.svg" alt="exit">
-            <div class="tooltiptext">Exit</div>
           </button>
         </div>
       </div>
@@ -83,7 +87,8 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onBeforeMount } from 'vue';
+import { onBeforeMount, ref } from 'vue';
+import type { Task } from './types';
 import { useRouter } from 'vue-router';
 import type { AxiosError } from 'axios';
 import { authMe } from '@/api/authMe';
@@ -96,60 +101,78 @@ import Printer from '@/assets/icons/Printer.vue';
 const authorizationStore = useAuthorizationStore();
 const router = useRouter();
 
-// Задачи, определенные в data функции
-const taskName = ref ('');
-const tasks = ref([{
-  _id: 'wewewe2123',
-  name: 'Create to do ',
-  isCompleted: false,
-  type: 'bussines',
-}]);
+const taskName = ref('');
+const tasks = ref<Task[]>([]);
 
 onBeforeMount(async () => {
-  try {
-    if (authorizationStore.isSuccess) {
-      return;
-    }
-    authorizationStore.setIsLoading(true);
-    const response = await authMe();
+  await validateAuthorization();
+});
 
+async function validateAuthorization() {
+  if (authorizationStore.isSuccess) {
+    return;
+  }
+
+  authorizationStore.setIsLoading(true);
+  try {
+    const response = await authMe();
     if (response.status === 200) {
       authorizationStore.setIsSuccess(true);
     }
   } catch (e) {
-    const error = e as AxiosError;
-    if (error.response?.status === 401) {
-      router.replace('/preview');
-    }
+    handleAuthError(e);
   } finally {
     authorizationStore.setIsLoading(false);
   }
-});
-
-// Пример функции для toggle tooltip
-function toggleTooltip(task) {
-  console.log(`Toggling tooltip for task: ${task.name}`);
 }
 
-function completedHandler(taskId) {
-  const currentTask = tasks.value.find((t) => t._id === taskId);
-  if(currentTask) {
-    currentTask.isCompleted = !currentTask.isCompleted;
+function handleAuthError(error: unknown) {
+  const axiosError = error as AxiosError;
+  if (axiosError.response?.status === 401) {
+    router.replace('/preview');
   }
 }
 
-function addTask() {
-  tasks.value.push({
-    _id:Math.random(). toString(36).substring(2, 7),
-    name:taskName.value,
-    isCompleted: false,
-    type: 'personal',
-  })
-  taskName.value = '';
+function toggleTooltip(task: Task, type: string) {
+  console.log(`Toggling ${type} tooltip for task: ${task.name}`);
 }
 
-</script>
+function addTask() {
+  if (taskName.value.trim()) {
+    tasks.value.push({
+      _id: Date.now().toString(),
+      name: taskName.value,
+      isCompleted: false,
+      type: 'business', // Логика определения типа задачи может быть добавлена позже
+      isEditing: false
+    });
+    taskName.value = '';
+  }
+}
 
+function toggleTaskCompletion(taskId: string) {
+  const task = tasks.value.find(t => t._id === taskId);
+  if (task) {
+    task.isCompleted = !task.isCompleted; // Переключение состояния выполнения
+  }
+}
+
+function priorityTask(taskId: string) {
+  console.log(`Setting priority for task: ${taskId}`);
+}
+
+function closeTask(taskId: string) {
+  tasks.value = tasks.value.filter(t => t._id !== taskId);
+}
+
+function editTask(task: Task) {
+  task.isEditing = true;
+}
+
+function saveTask(task: Task) {
+  task.isEditing = false;
+}
+</script>
 
 <style lang="scss">
 @import '../assets/scss/vars.scss';
@@ -183,12 +206,14 @@ function addTask() {
   padding-left: 20px;
   width: 370px;
   height: 40px;
-  border: 1px solid $blue2;
+  border: 1px solid $grey;
 }
 .search_tasks::placeholder {
   color: $grey;
 }
-
+.search_tasks:hover{
+  border: 1px solid $blue2
+}
 .calendar {
   display: flex;
   align-items: center;
@@ -251,14 +276,17 @@ function addTask() {
   height: 50px;
   padding: 10px;
   padding-left: 20px;
-  border: 1px solid $blue2;
+  border: 1px solid $grey;
   margin: 0;
   border-radius: 20px;
-
   background-color: #fff;
 }
+
 .add-task::placeholder{
   color: $grey;
+}
+.add-task:hover{
+  border: 1px solid $blue2
 }
 .add-task_button{
   background-color: $blue;
@@ -271,12 +299,15 @@ function addTask() {
   outline: none;
   width: 40px;
   height: 40px;
+  cursor: pointer;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
+.add-task_button:hover{
+  opacity: 0.8;
+}
 .round {
   position: relative;
   background-color: #ffffff;
@@ -286,17 +317,17 @@ function addTask() {
   width: 25px;
   height: 25px;
 }
-.round .bussines {
-  border-color: $blue;
-}
-.round .personal {
-  border-color: #974613;
-}
+// .round .bussines {
+//   border-color: $blue;
+// }
+// .round .personal {
+//   border-color: #974613;
+// }
 .round:after {
   border: 2px solid #ffffff;
   border-top: none;
   border-right: none;
-  content: ""; 
+  content: "";
   height: 8px;
   left: 5px;
   opacity: 0;
@@ -307,8 +338,6 @@ function addTask() {
 }
 
 .task{
-  display: flex;
-  // cursor: pointer;
   display: flex;
   justify-content: space-between;
   margin: 10px auto;
@@ -322,43 +351,45 @@ function addTask() {
   padding-left: 25px;
   display: flex;
   align-items: center;
+  width: 90%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.task_button button{
-  width: 24px;
-  height: 24px;
+.task_left .edit-input {
+  padding-left: 25px;
+  width: 90%;
+  border: none;
+  border-bottom: 1px solid $grey;
+}
+.task_button button {
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 }
-.task_options{
+.task_options {
   display: flex;
-  gap: 30px;
-}
-.task_options img{
-  cursor: pointer;
-}
-.task_left{
-display: flex;
-align-items: center;
+  gap: 20px;
+  margin-left: 10px;
 }
 
-.task.completed{
+.task_left {
+  display: flex;
+  align-items: center;
+  width: 90%; /* чтобы span и input занимали всю ширину контейнера */
+}
+
+.task.completed {
   text-decoration: line-through;
 }
 
-.task.completed .round{
+.round.completed {
   border-color: transparent;
   background-color: #0AC304;
 }
 
-// .task.completed.round {
-//   border-color: transparent;
-//   background-color: rgba(255, 255, 255, .5);
-// }
-// .task.checked .round:after {
-//   opacity: 1;
-// }
-
-.task.completed .round:after {
-opacity: 1;
+.round.completed:after {
+  opacity: 1;
 }
 
 .task_button {
@@ -370,28 +401,43 @@ opacity: 1;
 }
 
 .task_button img {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
 }
-
 /* Стили для подсказки */
-.tooltiptext {
-  visibility: hidden; /* Подсказка невидима по умолчанию */
-  background-color: $blue;
-  color: #fff;
+.task_button .tooltiptext {
+  visibility: hidden; 
+  background-color: #fff;
+  color: #494949;
   text-align: center;
   white-space: nowrap;
   border-radius: 6px;
   padding: 4px;
   position: absolute;
   z-index: 1;
-  bottom: 125%; /* Расположение над кнопкой */
+  bottom: 90%; 
   left: 50%;
+  font-size: 15px;
   transform: translateX(-50%);
   opacity: 0;
   transition: opacity 0.3s;
+  box-shadow: 0px 8px 48px 0px rgba(0, 0, 0, 0.21);
 }
 
+.task_button::before{
+  content: '';
+  display: block;
+  width: 0;
+  height: 2px;
+  background: #333;
+  transition: 0.3s;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.task_button:hover:before {
+  width: 100%;
+}
 /* Стрелка подсказки */
 .tooltiptext::after {
   content: "";
@@ -401,12 +447,19 @@ opacity: 1;
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: $blue transparent transparent transparent;
+  border-color: #fff transparent transparent transparent;
 }
-
 /* Показываем подсказку при наведении */
 .task_button:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+.task_left.completed  {
+  width: 90%;
+}
+
+.task_left.completed span {
+  text-decoration: line-through;
+  color: $grey;
 }
 </style>

@@ -38,6 +38,7 @@
                 placeholder="Enter your password"
                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                 title=""
+                maxlength="24"
                 required
               />
               <span @click="togglePasswordVisibility" class="input-box-eye">
@@ -136,7 +137,7 @@
           minLength
         } = validator(this.password).test({
           include: [lowerCaseLetters, upperCaseLetters, numbers],
-          minLength: 8
+          minLength: 8,
         })
         return [
           { text: 'minimum 8 characters', isValid: minLength },

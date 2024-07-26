@@ -3,8 +3,6 @@ import { createPinia } from 'pinia'
 import router from './router'
 import App from './App.vue'
 import vClickOutside from 'v-click-outside';
-// import 'bootstrap/dist/css/bootstrap.css';
-// import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 
 
@@ -20,3 +18,4 @@ app.directive('click-outside', vClickOutside);
 
 navigator.serviceWorker.register('/service-worker.ts', { scope: "/" })
     .then(() => console.log('регистрация sw успешна'))
+    

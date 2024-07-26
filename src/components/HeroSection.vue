@@ -33,7 +33,7 @@
       >
       </div>
     </section>
-    <section class="tasks">
+    <section >
       <div class="to_do_list_container">
         <div class="to_do_list">
           <h3 id="todolist">To do list</h3>
@@ -55,7 +55,7 @@
         </div>
       </div>
     </section>
-    <section class="myDay">
+    <section>
       <div class="myDay_container">
         <div class="Day">
           <h3 id="MyDay">My day</h3>
@@ -75,7 +75,7 @@
         </div>
       </div>
     </section>
-    <section class="sevenDays">
+    <section>
       <div class="sevenDays_container">
         <div class="sevenDay">
           <h3 id="7Days">7 days</h3>
@@ -95,7 +95,7 @@
         </div>
       </div>
     </section>
-    <section class="calendar">
+    <section>
       <div class="calendar_container">
         <div class="calend">
           <h3 id="Calendar">Calendar</h3>
@@ -281,31 +281,31 @@ if(reviewsContainerRef.value) {
   <style lang="scss" scoped>
   @import '../assets/scss/vars.scss';
 
-  .header {
-    display: flex;
-    text-align: center;
-    padding: 200px 0 100px 0;
-    background-color: #fff;
-    width: 100vw;
-  }
-  
-  .container {
-    width: 100vw;
-    max-width: 100%;
-    overflow-x: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.header {
+  display: flex;
+  text-align: center;
+  padding: 200px 0 100px 0;
+  background-color: #fff;
+  width: 100vw;
+}
 
-  }
- .header_element{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-  }
-  .hero {
+.container {
+  width: 100vw;
+  max-width: 100%;
+  overflow-x: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.header_element{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
+}
+.hero {
   text-align: center;
   padding: 200px 0 100px 0;
   background-color: #fff;
@@ -321,17 +321,17 @@ if(reviewsContainerRef.value) {
   padding: 0 30px;
   font-size: 60px;
   margin-bottom: 20px;
-
   transform: translate(0px,100%);
   opacity: 0;
   transition: all 1.5s ease 0s;
 }
+
 .anim_h1._active {
   transform: translate(0px, 0px);
   opacity: 1;
 }
 
-  .anim_p {
+.anim_p {
   padding: 0 30px;
   text-align: center;
   color: #737373;
@@ -417,7 +417,6 @@ p{
   gap: 30px;
   padding: 20px;
 }
-
 .to_do_list_container {
   padding: 120px 0 80px 0;
 }
@@ -564,7 +563,6 @@ h3 {
   box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.21);
 }
 
-
 .sevenDays_container{
   padding: 40px 0 80px 0;
 }
@@ -649,7 +647,7 @@ h3 {
 
 @media (max-width: 1400px) {
 
-  .img-container_possibilities{
+.img-container_possibilities{
   flex-direction: column-reverse;
 }
 ul::before{
