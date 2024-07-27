@@ -7,30 +7,43 @@
   </div>
   <section class="main-content">
     <div class="search">
-      <input class="search_tasks" type="text" placeholder="Search..." />
+      <input
+        class="search_tasks"
+        type="text"
+        placeholder="Search..."
+      />
     </div>
     <div class="calendar">
       <div class="calendar__date">
-        <div class="date">Mon <br> 6 <br> May</div>
+        <div class="date">
+          <p class="date-p_Week">Mon</p>
+          <p class="date-p_Day">6</p>
+          <p class="date-p_Month">May</p>
+        </div>
       </div>
       <div class="calendar__actions">
-        <button class="task_button" @click="() => toggleTooltip(null, 'printer')"> 
+        <button class="task_button" @click="toggleTooltip(null, 'printer')">
           <Printer />
           <div class="tooltiptext">Printer</div>
         </button>
-        <button class="task_button" @click="() => toggleTooltip(null, 'grid')">
+        <button class="task_button" :class="{ active: viewMode === 'grid' }" @click="setViewMode('grid')">
           <Grid />
           <div class="tooltiptext">Grid</div>
         </button>
-        <button class="task_button" @click="() => toggleTooltip(null, 'list')">
+        <button class="task_button" :class="{ active: viewMode === 'list' }" @click="setViewMode('list')">
           <img src="@/assets/img/svg/list.svg" alt="list">
           <div class="tooltiptext">List</div>
         </button>
         <div class="sorting">
-          <button class="task_button" @click="() => toggleTooltip(null, 'sorting')">
+          <button class="task_button" @click="toggleDropdown">
             <img src="@/assets/img/svg/Sorting.svg" alt="">
             <div class="tooltiptext">Sorting</div>
           </button>
+          <ul class="dropdown-content" v-if="isDropdownOpen">
+            <li @click="sortBy('priority')">Priority</li>
+            <li @click="sortBy('dateCompleted')">Date Completed</li>
+            <li @click="sortBy('alphabet')">Alphabet</li>
+          </ul>
         </div>
       </div>
     </div>
@@ -44,25 +57,24 @@
       />
       <button @click="addTask" class="add-task_button">+</button>
     </div>
-    <div class="tasks_new">
-      <div 
-        class="task" 
-        v-for="task in tasks" 
-        :key="task._id">
-        <div class="task_left"
-        :class="{ completed: task.isCompleted }">
-          <div 
+    <div class="tasks_new" :class="viewMode">
+      <div
+        class="task"
+        v-for="task in tasks"
+        :key="task._id"
+         :class="[ 'task-item', getPriorityClass(task.priority)]"
+      >
+        <div class="task_left" :class="{ completed: task.isCompleted }">
+          <div
             class="round"
-            :class="{
-              completed: task.isCompleted
-            }"
+            :class="{ completed: task.isCompleted }"
             @click="toggleTaskCompletion(task._id)"
           ></div>
-          <span 
+          <span
             v-if="!task.isEditing"
             @dblclick="editTask(task)"
           >{{ task.name }}</span>
-          <input 
+          <input
             v-else
             v-model="task.name"
             @blur="saveTask(task)"
@@ -74,9 +86,14 @@
           <button class="task_button" @click="editTask(task)">
             <img src="@/assets/img/svg/edit.svg" alt="edit">
           </button>
-          <button class="task_button" @click="priorityTask(task._id)">
-            <img src="@/assets/img/svg/pri.svg" alt="priority">       
+          <button class="task_button "  @click="togglePriorityDropdown(task._id)">
+            <img src="@/assets/img/svg/pri.svg" alt="priority">
           </button>
+          <ul class="dropdown-content" v-if="isPriorityDropdownOpen(task._id)">
+            <li @click="setTaskPriority(task._id,'hard')" class="priority-important">Important</li>
+            <li @click="setTaskPriority(task._id,'medium')" class="priority-medium">Medium</li>
+            <li @click="setTaskPriority(task._id,'easy')" class="priority-easy">Easy</li>
+          </ul>
           <button class="task_button" @click="closeTask(task._id)">
             <img src="@/assets/img/svg/eee.svg" alt="exit">
           </button>
@@ -87,7 +104,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, ref, onMounted, onBeforeUnmount } from 'vue';
 import type { Task } from './types';
 import { useRouter } from 'vue-router';
 import type { AxiosError } from 'axios';
@@ -101,13 +118,23 @@ import Printer from '@/assets/icons/Printer.vue';
 const authorizationStore = useAuthorizationStore();
 const router = useRouter();
 
+
 const taskName = ref('');
 const tasks = ref<Task[]>([]);
+const viewMode = ref('list');
+const isDropdownOpen = ref(false);
+const priorityDropdownTaskId = ref<string | null>(null);
 
 onBeforeMount(async () => {
   await validateAuthorization();
 });
+onMounted(() => {
+  document.addEventListener('mousedown', handleOutsideClick);
+});
 
+onBeforeUnmount(() => {
+  document.removeEventListener('mousedown', handleOutsideClick);
+});
 async function validateAuthorization() {
   if (authorizationStore.isSuccess) {
     return;
@@ -144,7 +171,7 @@ function addTask() {
       name: taskName.value,
       isCompleted: false,
       type: 'business', // Логика определения типа задачи может быть добавлена позже
-      isEditing: false
+      isEditing: false,
     });
     taskName.value = '';
   }
@@ -157,9 +184,6 @@ function toggleTaskCompletion(taskId: string) {
   }
 }
 
-function priorityTask(taskId: string) {
-  console.log(`Setting priority for task: ${taskId}`);
-}
 
 function closeTask(taskId: string) {
   tasks.value = tasks.value.filter(t => t._id !== taskId);
@@ -171,6 +195,58 @@ function editTask(task: Task) {
 
 function saveTask(task: Task) {
   task.isEditing = false;
+}
+
+function setViewMode(mode: 'list' | 'grid') {
+  viewMode.value = mode;
+}
+
+
+function toggleDropdown() {
+  isDropdownOpen.value = !isDropdownOpen.value;
+}
+
+function handleOutsideClick(e: MouseEvent) {
+  const dropdown = document.querySelector('.dropdown-content');
+  if (dropdown && !dropdown.contains(e.target as Node)) {
+    isDropdownOpen.value = false;
+  }
+}
+
+function sortBy(criteria: string) {
+  console.log(`Sorting by: ${criteria}`);
+  isDropdownOpen.value = false;
+}
+function togglePriorityDropdown(taskId: string) {
+  if (priorityDropdownTaskId.value === taskId) {
+    priorityDropdownTaskId.value = null;
+  } else {
+    priorityDropdownTaskId.value = taskId;
+  }
+}
+
+function isPriorityDropdownOpen(taskId: string) {
+  return priorityDropdownTaskId.value === taskId;
+}
+
+function getPriorityClass(priority: string) {
+      switch (priority) {
+        case 'hard':
+          return 'task-important';
+        case 'medium':
+          return 'task-medium';
+        case 'easy':
+          return 'task-easy';
+        default:
+          return '';
+      }
+    }
+function setTaskPriority(taskId: string, priority: string) {
+  const task = tasks.value.find(task => task._id === taskId);
+  if (task) {
+    task.priority = priority;
+  }
+  priorityDropdownTaskId.value = null;
 }
 </script>
 
@@ -228,6 +304,18 @@ function saveTask(task: Task) {
 }
 .date {
   font-size: 30px;
+  // box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.21);
+  background-color: #F7F7F7;
+
+}
+.date-p_Week {
+  color: $grey;
+}
+.date-p_Day {
+  color: $blue;
+}
+.date-p_Month {
+  color: $grey;
 }
 
 .calendar__actions {
@@ -255,6 +343,33 @@ function saveTask(task: Task) {
   display: flex;
   margin-left: auto;
 }
+.dropdown-content {
+  display: block;
+  position: absolute;
+  background-color: #fff;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 50px;
+  right: 100px;
+}
+
+.dropdown-content li {
+  color: black;
+  padding: 10px 13px;
+  font-size: 15px;
+  text-decoration: none;
+  display: block;
+  cursor: pointer;
+  border-bottom: 1px solid $grey;
+  
+}
+
+.dropdown-content li:hover {
+  background-color: $grey3;
+}
 .tasks {
   display: flex;
   justify-content: center;
@@ -263,6 +378,22 @@ function saveTask(task: Task) {
   width: 100%;
   padding: 40px;
 }
+
+.tasks_new {
+  &.grid {
+    display: grid;
+    grid-template-rows: repeat(auto-fill, minmax(1fr));
+    grid-auto-flow: row;
+    .task {
+  margin: 1px auto;
+  border-radius: 1px;
+  width: 80%;
+  background-color: #ffffff;
+  box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
 .tasks_new {
   width: 100%;
   padding: 40px;
@@ -317,12 +448,7 @@ function saveTask(task: Task) {
   width: 25px;
   height: 25px;
 }
-// .round .bussines {
-//   border-color: $blue;
-// }
-// .round .personal {
-//   border-color: #974613;
-// }
+
 .round:after {
   border: 2px solid #ffffff;
   border-top: none;
@@ -461,5 +587,38 @@ function saveTask(task: Task) {
 .task_left.completed span {
   text-decoration: line-through;
   color: $grey;
+}
+.task-important {
+  background-color: #c12424;
+}
+
+.task-medium {
+  background-color: #EDFF21;
+}
+
+.task-easy {
+  background-color: #32CD32;
+}
+
+.priority-important, .priority-medium, .priority-easy {
+  cursor: pointer;
+  display: inline-block;
+  padding: 3px 10px;
+  margin: 5px;
+  border-radius: 3px;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+.priority-important {
+  background-color: #c12424;
+}
+.priority-medium {
+  background-color: #EDFF21;
+}
+.priority-easy {
+  background-color: #32CD32;
+}
+.priority-important:hover, .priority-medium:hover, .priority-easy:hover {
+  opacity: 1;
 }
 </style>
