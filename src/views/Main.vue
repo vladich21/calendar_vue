@@ -39,7 +39,7 @@
             <img src="@/assets/img/svg/Sorting.svg" alt="">
             <div class="tooltiptext">Sorting</div>
           </button>
-          <ul class="dropdown-content" v-if="isDropdownOpen">
+          <ul class="dropdown-content opacity" v-if="isDropdownOpen">
             <li @click="sortBy('priority')">Priority</li>
             <li @click="sortBy('dateCompleted')">Date Completed</li>
             <li @click="sortBy('alphabet')">Alphabet</li>
@@ -62,7 +62,7 @@
         class="task"
         v-for="task in tasks"
         :key="task._id"
-         :class="[ 'task-item', getPriorityClass(task.priority)]"
+         :class="[ 'task-item', getPriorityClass(task.priority), viewMode]"
       >
         <div class="task_left" :class="{ completed: task.isCompleted }">
           <div
@@ -92,7 +92,8 @@
           <ul class="dropdown-content" v-if="isPriorityDropdownOpen(task._id)">
             <li @click="setTaskPriority(task._id,'hard')" class="priority-important">Important</li>
             <li @click="setTaskPriority(task._id,'medium')" class="priority-medium">Medium</li>
-            <li @click="setTaskPriority(task._id,'easy')" class="priority-easy">Easy</li>
+            <li @click="setTaskPriority(task._id,'easy')" 
+            class="priority-easy">Easy</li>
           </ul>
           <button class="task_button" @click="closeTask(task._id)">
             <img src="@/assets/img/svg/eee.svg" alt="exit">
@@ -105,7 +106,7 @@
 
 <script lang="ts" setup>
 import { onBeforeMount, ref, onMounted, onBeforeUnmount } from 'vue';
-import type { Task } from './types';
+import type { Task } from '../types';
 import { useRouter } from 'vue-router';
 import type { AxiosError } from 'axios';
 import { authMe } from '@/api/authMe';
@@ -201,7 +202,6 @@ function setViewMode(mode: 'list' | 'grid') {
   viewMode.value = mode;
 }
 
-
 function toggleDropdown() {
   isDropdownOpen.value = !isDropdownOpen.value;
 }
@@ -215,6 +215,20 @@ function handleOutsideClick(e: MouseEvent) {
 
 function sortBy(criteria: string) {
   console.log(`Sorting by: ${criteria}`);
+  switch (criteria) {
+    case 'priority':
+      tasks.value.sort((a,b) => { 
+        const priorityOrder = { hard: 3, medium: 2, easy: 1 };
+    return priorityOrder[b.priority] - priorityOrder[a.priority];
+    });
+        break;
+    case 'dateCompleted':
+      tasks.value.sort((a, b) => (a.dateCompleted < b.dateCompleted ? 1 : -1));
+        break;
+    case 'alphabet':
+      tasks.value.sort((a, b) => (a.name.localeCompare(b.name)));
+      break;
+  }
   isDropdownOpen.value = false;
 }
 function togglePriorityDropdown(taskId: string) {
@@ -304,18 +318,6 @@ function setTaskPriority(taskId: string, priority: string) {
 }
 .date {
   font-size: 30px;
-  // box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.21);
-  background-color: #F7F7F7;
-
-}
-.date-p_Week {
-  color: $grey;
-}
-.date-p_Day {
-  color: $blue;
-}
-.date-p_Month {
-  color: $grey;
 }
 
 .calendar__actions {
@@ -351,19 +353,18 @@ function setTaskPriority(taskId: string, priority: string) {
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
   border-radius: 10px;
-  padding: 10px;
+  // padding: 5px 0;
   margin-top: 50px;
   right: 100px;
 }
 
 .dropdown-content li {
   color: black;
-  padding: 10px 13px;
-  font-size: 15px;
+  padding: 10px 15px;
+  font-size: 14px;
   text-decoration: none;
   display: block;
   cursor: pointer;
-  border-bottom: 1px solid $grey;
   
 }
 
@@ -388,7 +389,6 @@ function setTaskPriority(taskId: string, priority: string) {
   margin: 1px auto;
   border-radius: 1px;
   width: 80%;
-  background-color: #ffffff;
   box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.1);
     }
   }
