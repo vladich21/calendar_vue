@@ -106,7 +106,6 @@ export default {
 
     &:hover {
       background-color: $grey2;
-      color: $blue2;
     }
     
     & span {
