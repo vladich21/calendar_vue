@@ -280,7 +280,8 @@ function setTaskPriority(taskId: string, priority: string) {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+width: 100vw;
+height: 100vh;
   background-color: $grey3;
   box-sizing: border-box;
 }

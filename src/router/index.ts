@@ -11,7 +11,7 @@ const router = createRouter({
     {
       path: '/preview',
       name: 'preview',
-      component: Preview,
+      component: Preview
     },
     {
       path: '/',
@@ -29,11 +29,11 @@ const router = createRouter({
       component: SignIn
     },
     {
-      path: '/forgot-password', 
+      path: '/forgot-password',
       name: 'forgot-password',
-      component: ForgotPassword,
-    },
+      component: ForgotPassword
+    }
   ]
-})  
+})
 
 export default router
