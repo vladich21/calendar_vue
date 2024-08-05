@@ -1,38 +1,9 @@
-<script lang="ts">
-import { ref } from 'vue';
-import Settings from '../assets/icons/SettingsOutline.vue';
-import PinIcon from '../assets/icons/PinSolid.vue';
-import CalendarOutline from '../assets/icons/CalendarOutline.vue';
-import CalendarV2Outline from '../assets/icons/CalendarV2Outline.vue';
-
-export default {
-  components: {
-    PinIcon,
-    Settings,
-    CalendarOutline,
-    CalendarV2Outline,
-  },
-  setup() {
-    const isUserMenuOpen = ref(false);
-
-    const toggleUserMenu = () => {
-      isUserMenuOpen.value = !isUserMenuOpen.value;
-    };
-
-    return {
-      isUserMenuOpen,
-      toggleUserMenu,
-    };
-  },
-};
-</script>
-
 <template>
-  <section class="said-bar">
-    <span role="button" class="said-bar__pin-button"><PinIcon /></span>
-    <div class="said-bar__section">
-      <div class="said-bar__user-info" @click="toggleUserMenu">
-        <div class="said-bar__user-info-photo"></div>
+  <section v-if="isSideBarVisible" :class="['side-bar', { hidden: !isSideBarVisible }]">
+    <span role="button" class="side-bar__pin-button" @click="toggleSideBar">→</span>
+    <div class="side-bar__section">
+      <div class="side-bar__user-info">
+        <div class="side-bar__user-info-photo" @click="toggleUserMenu"></div>
         <div v-if="isUserMenuOpen" class="user-menu">
           <div class="user-menu__header">
             <span class="user-menu__name">Name</span>
@@ -62,43 +33,95 @@ export default {
         </div>
       </div>
       <button>
-        <span>
-          <Settings />
-          My day
-        </span>
+        <span><Settings /> My day</span>
       </button>
       <button>
-        <span>
-          <CalendarOutline />
-          Next 7 days
-        </span>
+        <span><CalendarOutline /> Next 7 days</span>
       </button>
       <button>
-        <span>
-          <CalendarV2Outline />
-          My Calendar
-        </span>
+        <span><CalendarV2Outline /> My Calendar</span>
       </button>
     </div>
-    <div class="said-bar__actions">
+    <div class="side-bar__actions">
       <button><span>+ new list</span></button>
       <button><span>+ add group</span></button>
     </div>
   </section>
+  <div v-if="!isSideBarVisible" class="side-bar-toggle" @click="toggleSideBar">
+    <span>→</span>
+  </div>
+  <div v-if="isUserMenuOpen" class="overlay" @click="toggleUserMenu"></div>
 </template>
 
+<script lang="ts">
+import { ref, onMounted, onBeforeUnmount } from 'vue';
+import Settings from '../assets/icons/SettingsOutline.vue';
+// import PinIcon from '../assets/icons/PinSolid.vue';
+import CalendarOutline from '../assets/icons/CalendarOutline.vue';
+import CalendarV2Outline from '../assets/icons/CalendarV2Outline.vue';
+
+export default {
+components: {
+// PinIcon,
+Settings,
+CalendarOutline,
+CalendarV2Outline,
+},
+setup() {
+const isUserMenuOpen = ref(false);
+const isSideBarVisible = ref(false);
+
+const toggleUserMenu = () => {
+isUserMenuOpen.value = !isUserMenuOpen.value;
+};
+const toggleSideBar = () => {
+isSideBarVisible.value = !isSideBarVisible.value;
+};
+const handleOutsideClick = (e: MouseEvent) => {
+const userMenu = document.querySelector('.user-menu');
+const userInfoPhoto = document.querySelector('.side-bar__user-info-photo');
+if (
+userMenu &&
+!userMenu.contains(e.target as Node) &&
+userInfoPhoto &&
+!userInfoPhoto.contains(e.target as Node)
+) {
+isUserMenuOpen.value = false;
+}
+};
+
+onMounted(() => {
+document.addEventListener('mousedown', handleOutsideClick);
+});
+
+onBeforeUnmount(() => {
+document.removeEventListener('mousedown', handleOutsideClick);
+});
+return {
+isUserMenuOpen,
+toggleUserMenu,
+isSideBarVisible,
+toggleSideBar,
+};
+},
+
+};
+</script>
 
 <style lang="scss">
 @import '../assets/scss/vars.scss';
 
-.said-bar {
+.side-bar {
   display: flex;
   flex-direction: column;
   height: 100vh;
   width: 250px;
   background-color: $white;
   position: relative;
-
+  transition: transform 0.5s;
+  &.hidden {
+    transform: translateX(-100%);
+  }
   &__section {
     flex-grow: 1;
     display: flex;
@@ -116,7 +139,6 @@ export default {
     display: flex;
     height: 115px;
     align-items: center;
-    cursor: pointer;
   }
 
   &__user-info-photo {
@@ -137,58 +159,51 @@ export default {
     position: absolute;
     cursor: pointer;
     top: 5px;
-    right: 0;
+    right: -38px;
+    background-color: $white;
+    padding: 10px;
+    border: 1px solid $grey2;
+    cursor: pointer;
+
   }
 
   & button {
     cursor: pointer;
     height: 40px;
-
-    & svg {
-      position: relative;
-      top: 3px;
-      left: -3px;
-    }
-
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 20px;
+    transition: background 0.3s;
     &:hover {
       background-color: $grey2;
-    transition: background 0.3s;
+    }
 
+    & svg {
+      margin-right: 10px;
     }
 
     & span {
-      margin-left: 30px;
-      cursor: pointer;
+      margin-left: 10px;
     }
   }
 }
 
 .user-menu {
   position: absolute;
-  top: 75px;
-  left: 20px;
+  top: 85px;
+  left: 5px;
   width: 250px;
   background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.21);
   border-radius: 5px;
   overflow: hidden;
-  z-index: 1000;
+  z-index: 9999999;
 
   &__header {
     display: flex;
     align-items: center;
     padding: 15px;
-    // border-bottom: 1px solid #eee;
-    // &::after {
-    //   content: '';
-    //   position: absolute;
-    //   bottom: -1.5px; // смещение для правильного размещения тени
-    //   left: 0;
-    //   right: 0;
-    //   height: 1.5px;
-    //   background-color: #eee; // цвет линии
-    //   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // тень для линии
-    // }
   }
 
   &__photo {
@@ -215,26 +230,16 @@ export default {
     margin-bottom: 10px;
     display: block;
     border-bottom: 1.5px solid #eee;
-    // &::after {
-    //   content: '';
-    //   position: absolute;
-    //   bottom: -10px;  // смещение вниз для перекрытия родительского padding
-    //   left: -125px;   // смещение влево для перекрытия родительского padding
-    //   right: -105px;  // смещение вправо для перекрытия родительского padding
-    //   // border-bottom: 1.5px solid #eee;
-    // }
   }
 
   &__button {
     z-index: 2;
     display: flex;
     align-items: center;
-    // padding: 10px;
     border: none;
     background: none;
     width: 100%;
     text-align: left;
-    // cursor: pointer;
     color: #000;
     font-size: 14px;
     transition: background 0.3s;
@@ -248,5 +253,24 @@ export default {
     }
   }
 }
-</style>
 
+.side-bar-toggle {
+position: fixed;
+top: 10px;
+left: 0;
+background-color: $white;
+padding: 10px;
+border: 1px solid $grey2;
+cursor: pointer;
+z-index: 1001;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+</style>
