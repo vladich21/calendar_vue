@@ -106,11 +106,11 @@
 
 <script lang="ts" setup>
 import { onBeforeMount, ref, onMounted, onBeforeUnmount } from 'vue';
-import type { Task } from '../types';
+import type { Task } from '@/types/types';  // Обновленный путь импорта
 import { useRouter } from 'vue-router';
 import type { AxiosError } from 'axios';
 import { authMe } from '@/api/authMe';
-import { useAuthorizationStore } from '@/store/useAuthorizationStore';
+import { useAuthorizationStore } from '../store/useAuthorizationStore';
 import Preloader from '@/assets/icons/Preloader.vue';
 import Sidebar from '../components/Sidebar.vue';
 import Grid from '@/assets/icons/Grid.vue';
@@ -118,7 +118,6 @@ import Printer from '@/assets/icons/Printer.vue';
 
 const authorizationStore = useAuthorizationStore();
 const router = useRouter();
-
 
 const taskName = ref('');
 const tasks = ref<Task[]>([]);
@@ -136,6 +135,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   document.removeEventListener('mousedown', handleOutsideClick);
 });
+
 async function validateAuthorization() {
   if (authorizationStore.isSuccess) {
     return;
@@ -161,9 +161,14 @@ function handleAuthError(error: unknown) {
   }
 }
 
-function toggleTooltip(task: Task, type: string) {
-  console.log(`Toggling ${type} tooltip for task: ${task.name}`);
+function toggleTooltip(task: Task | null, type: string) {
+  if (task) {
+    console.log(`Toggling ${type} tooltip for task: ${task.name}`);
+  } else {
+    console.log(`Toggling ${type} tooltip`);
+  }
 }
+
 
 function addTask() {
   if (taskName.value.trim()) {
@@ -173,7 +178,9 @@ function addTask() {
       isCompleted: false,
       type: 'business', // Логика определения типа задачи может быть добавлена позже
       isEditing: false,
-    });
+      priority: 'medium', // Добавляем тип приоритета по умолчанию
+      dateCompleted: new Date(), // Добавляем дату завершения по умолчанию
+    } as Task);
     taskName.value = '';
   }
 }
@@ -184,7 +191,6 @@ function toggleTaskCompletion(taskId: string) {
     task.isCompleted = !task.isCompleted; // Переключение состояния выполнения
   }
 }
-
 
 function closeTask(taskId: string) {
   tasks.value = tasks.value.filter(t => t._id !== taskId);
@@ -217,20 +223,21 @@ function sortBy(criteria: string) {
   console.log(`Sorting by: ${criteria}`);
   switch (criteria) {
     case 'priority':
-      tasks.value.sort((a,b) => { 
-        const priorityOrder = { hard: 3, medium: 2, easy: 1 };
-    return priorityOrder[b.priority] - priorityOrder[a.priority];
-    });
-        break;
+      tasks.value.sort((a, b) => { 
+        const priorityOrder: { [key: string]: number } = { hard: 3, medium: 2, easy: 1 };
+        return priorityOrder[b.priority] - priorityOrder[a.priority];
+      });
+      break;
     case 'dateCompleted':
       tasks.value.sort((a, b) => (a.dateCompleted < b.dateCompleted ? 1 : -1));
-        break;
+      break;
     case 'alphabet':
-      tasks.value.sort((a, b) => (a.name.localeCompare(b.name)));
+      tasks.value.sort((a, b) => a.name.localeCompare(b.name));
       break;
   }
   isDropdownOpen.value = false;
 }
+
 function togglePriorityDropdown(taskId: string) {
   if (priorityDropdownTaskId.value === taskId) {
     priorityDropdownTaskId.value = null;
@@ -244,17 +251,18 @@ function isPriorityDropdownOpen(taskId: string) {
 }
 
 function getPriorityClass(priority: string) {
-      switch (priority) {
-        case 'hard':
-          return 'task-important';
-        case 'medium':
-          return 'task-medium';
-        case 'easy':
-          return 'task-easy';
-        default:
-          return '';
-      }
-    }
+  switch (priority) {
+    case 'hard':
+      return 'task-important';
+    case 'medium':
+      return 'task-medium';
+    case 'easy':
+      return 'task-easy';
+    default:
+      return '';
+  }
+}
+
 function setTaskPriority(taskId: string, priority: string) {
   const task = tasks.value.find(task => task._id === taskId);
   if (task) {
@@ -263,6 +271,9 @@ function setTaskPriority(taskId: string, priority: string) {
   priorityDropdownTaskId.value = null;
 }
 </script>
+
+
+
 
 <style lang="scss">
 @import '../assets/scss/vars.scss';

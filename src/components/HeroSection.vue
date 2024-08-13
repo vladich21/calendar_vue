@@ -147,11 +147,12 @@
   
   <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import spotify from '@/assets/img/svg/Spotify.svg';
-import netflix from '@/assets/img/svg/netflix.svg';
-import google from '@/assets/img/svg/google_hero.svg';
-import wework from '@/assets/img/svg/wework.svg';
-import yandex from '@/assets/img/svg/yandex_hero.svg';
+import spotify from '@/assets/img/svg/Spotify.svg'
+import netflix from '@/assets/img/svg/netflix.svg'
+import google from '@/assets/img/svg/google_hero.svg'
+import wework from '@/assets/img/svg/wework.svg'
+import yandex from '@/assets/img/svg/yandex_hero.svg'
+
 
 
 const mainButton = ref<HTMLElement | null>(null);
