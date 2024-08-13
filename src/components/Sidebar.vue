@@ -56,20 +56,18 @@
 <script lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import Settings from '../assets/icons/SettingsOutline.vue';
-// import PinIcon from '../assets/icons/PinSolid.vue';
 import CalendarOutline from '../assets/icons/CalendarOutline.vue';
 import CalendarV2Outline from '../assets/icons/CalendarV2Outline.vue';
 
 export default {
 components: {
-// PinIcon,
 Settings,
 CalendarOutline,
 CalendarV2Outline,
 },
 setup() {
 const isUserMenuOpen = ref(false);
-const isSideBarVisible = ref(false);
+const isSideBarVisible = ref(true);
 
 const toggleUserMenu = () => {
 isUserMenuOpen.value = !isUserMenuOpen.value;
@@ -104,7 +102,6 @@ isSideBarVisible,
 toggleSideBar,
 };
 },
-
 };
 </script>
 
@@ -164,7 +161,6 @@ toggleSideBar,
     padding: 10px;
     border: 1px solid $grey2;
     cursor: pointer;
-
   }
 
   & button {
