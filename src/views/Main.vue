@@ -16,11 +16,11 @@
     <div class="calendar">
       <div class="calendar__date">
         <div class="date">
-          <p class="date-p_Week">Mon</p>
-          <p class="date-p_Day">6</p>
-          <p class="date-p_Month">May</p>
+          <p class="date-p_Week">{{ dayOfWeek }}</p>
+          <p class="date-p_Day">{{ day }}</p>
+          <p class="date-p_Month">{{ month }}</p>
         </div>
-      </div>
+     </div>
       <div class="calendar__actions">
         <button class="task_button" @click="toggleTooltip(null, 'printer')">
           <Printer />
@@ -125,8 +125,13 @@ const viewMode = ref('list');
 const isDropdownOpen = ref(false);
 const priorityDropdownTaskId = ref<string | null>(null);
 
+const dayOfWeek = ref('')
+const day = ref('')
+const month = ref('')
+
 onBeforeMount(async () => {
   await validateAuthorization();
+  updateDate();
 });
 onMounted(() => {
   document.addEventListener('mousedown', handleOutsideClick);
@@ -169,16 +174,15 @@ function toggleTooltip(task: Task | null, type: string) {
   }
 }
 
-
 function addTask() {
   if (taskName.value.trim()) {
     tasks.value.push({
       _id: Date.now().toString(),
       name: taskName.value,
       isCompleted: false,
-      type: 'business', // Логика определения типа задачи может быть добавлена позже
+      type: 'business',
       isEditing: false,
-      priority: 'medium', // Добавляем тип приоритета по умолчанию
+      priority: ' ', // Добавляем тип приоритета по умолчанию
       dateCompleted: new Date(), // Добавляем дату завершения по умолчанию
     } as Task);
     taskName.value = '';
@@ -269,6 +273,17 @@ function setTaskPriority(taskId: string, priority: string) {
     task.priority = priority;
   }
   priorityDropdownTaskId.value = null;
+}
+function updateDate() {
+const date = new Date();
+
+const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+const months = ['Jan', 'Feb', 'Mar','Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+dayOfWeek.value = daysOfWeek[date.getDay()];
+day.value = date.getDate().toString();
+month.value = months[date.getMonth()];
 }
 </script>
 

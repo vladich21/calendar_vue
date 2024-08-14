@@ -1,14 +1,22 @@
-FROM node:latest AS build-stage
+# 1. Создание Vue.js приложения
+FROM node:alpine as builder
+
 WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY ./ .
+COPY package.json package-lock.json ./
+ENV CI=1
+RUN npm ci
+
+COPY . .
 RUN npm run build
 
-FROM nginx AS production-stage
-RUN mkdir /app
-COPY --from=build-stage /app/dist /usr/share/nginx/html
-COPY nginx.conf nginx.conf
-EXPOSE 80
+# 2. Развертывание Vue.js приложения на NGINX
+FROM nginx:alpine
 
-CMD ["nginx", "-g", "daemon off;"]
+# Удаляем дефолтные страницы Nginx и копируем наш билд
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Копируем кастомную конфигурацию Nginx
+COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
+
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
