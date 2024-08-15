@@ -36,7 +36,7 @@
         </button>
         <div class="sorting">
           <button class="task_button" @click="toggleDropdown">
-            <img src="@/assets/img/svg/Sorting.svg" alt="">
+            <img  class="task_button_img" src="@/assets/img/svg/Sorting.svg" alt="">
             <div class="tooltiptext">Sorting</div>
           </button>
           <ul class="dropdown-content opacity" v-if="isDropdownOpen">
@@ -306,12 +306,13 @@ month.value = months[date.getMonth()];
   display: flex;
   flex-direction: column;
   align-items: center;
-width: 100vw;
-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   background-color: $grey3;
   box-sizing: border-box;
 }
 .search {
+  width: 60%;
   padding: 30px;
   margin-left: auto;
 }
@@ -321,7 +322,7 @@ height: 100vh;
   border-radius: 20px;
   padding: 10px;
   padding-left: 20px;
-  width: 370px;
+  width: 100%;
   height: 40px;
   border: 1px solid $grey;
 }
@@ -349,6 +350,7 @@ height: 100vh;
 
 .calendar__actions {
   display: flex;
+  align-items: center;
   width: 80%;
   height: 60px;
   gap: 50px;
@@ -358,6 +360,16 @@ height: 100vh;
 }
 .calendar__actions button {
   font-size: 20px;
+}
+
+.task_button{
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+.task_button img{
+height: 100%;
+width: 100%;
 }
 .img-button-three_dots {
   margin-top: 22px;
@@ -515,11 +527,7 @@ height: 100vh;
   border: none;
   border-bottom: 1px solid $grey;
 }
-.task_button button {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-}
+
 .task_options {
   display: flex;
   gap: 20px;
@@ -545,18 +553,6 @@ height: 100vh;
   opacity: 1;
 }
 
-.task_button {
-  position: relative; /* Необходимо для правильного позиционирования подсказки */
-  display: inline-block;
-  border: none;
-  background: none;
-  cursor: pointer;
-}
-
-.task_button img {
-  width: 20px;
-  height: 20px;
-}
 /* Стили для подсказки */
 .task_button .tooltiptext {
   visibility: hidden; 
