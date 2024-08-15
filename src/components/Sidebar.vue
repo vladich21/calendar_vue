@@ -1,56 +1,60 @@
 <template>
-  <section v-if="isSideBarVisible" :class="['side-bar', { hidden: !isSideBarVisible }]">
-    <span role="button" class="side-bar__pin-button" @click="toggleSideBar">→</span>
-    <div class="side-bar__section">
-      <div class="side-bar__user-info">
-        <div class="side-bar__user-info-photo" @click="toggleUserMenu"></div>
-        <div v-if="isUserMenuOpen" class="user-menu">
-          <div class="user-menu__header">
-            <span class="user-menu__name">Name</span>
-          </div>
-          <div class="user-menu__section">
-            <span class="user-menu__title">ACCOUNT</span>
-            <button class="user-menu__button">
-              <img src="../assets/img/svg/Group.svg" alt="group">
-              My Profile
-            </button>
-            <button class="user-menu__button">
-              <img src="../assets/img/svg/archive.svg" alt="archive">
-              Archived Tasks
-            </button>
-          </div>
-          <div class="user-menu__section">
-            <span class="user-menu__title">PREFERENCE</span>
-            <button class="user-menu__button">
-              <img src="../assets/img/svg/theme.svg" alt="theme">
-              Theme
-            </button>
-            <button class="user-menu__button">
-              <img src="../assets/img/svg/bgc.svg" alt="bgc">
-              Background
-            </button>
+  <Transition name="slide">
+    <section v-if="isSideBarVisible" class="side-bar">
+      <span role="button" class="side-bar__pin-button" @click="toggleSideBar">→</span>
+      <div class="side-bar__section">
+        <div class="side-bar__user-info">
+          <div class="side-bar__user-info-photo" @click="toggleUserMenu"></div>
+          <div v-if="isUserMenuOpen" class="user-menu">
+            <div class="user-menu__header">
+              <span class="user-menu__name">Name</span>
+            </div>
+            <div class="user-menu__section">
+              <span class="user-menu__title">ACCOUNT</span>
+              <button class="user-menu__button">
+                <img src="../assets/img/svg/Group.svg" alt="group">
+                My Profile
+              </button>
+              <button class="user-menu__button">
+                <img src="../assets/img/svg/archive.svg" alt="archive">
+                Archived Tasks
+              </button>
+            </div>
+            <div class="user-menu__section">
+              <span class="user-menu__title">PREFERENCE</span>
+              <button class="user-menu__button">
+                <img src="../assets/img/svg/theme.svg" alt="theme">
+                Theme
+              </button>
+              <button class="user-menu__button">
+                <img src="../assets/img/svg/bgc.svg" alt="bgc">
+                Background
+              </button>
+            </div>
           </div>
         </div>
+        <button>
+          <span><Settings /> My day</span>
+        </button>
+        <button>
+          <span><CalendarOutline /> Next 7 days</span>
+        </button>
+        <button>
+          <span><CalendarV2Outline /> My Calendar</span>
+        </button>
       </div>
-      <button>
-        <span><Settings /> My day</span>
-      </button>
-      <button>
-        <span><CalendarOutline /> Next 7 days</span>
-      </button>
-      <button>
-        <span><CalendarV2Outline /> My Calendar</span>
-      </button>
+      <div class="side-bar__actions">
+        <button><span>+ new list</span></button>
+        <button><span>+ add group</span></button>
+      </div>
+    </section>
+  </Transition>
+  <Transition name="fade">
+    <div v-show="!isSideBarVisible" class="side-bar-toggle" @click="toggleSideBar">
+      <span>→</span>
     </div>
-    <div class="side-bar__actions">
-      <button><span>+ new list</span></button>
-      <button><span>+ add group</span></button>
-    </div>
-  </section>
-  <div v-if="!isSideBarVisible" class="side-bar-toggle" @click="toggleSideBar">
-    <span>→</span>
-  </div>
-  <div v-if="isUserMenuOpen" class="overlay" @click="toggleUserMenu"></div>
+  </Transition>
+    <div v-if="isUserMenuOpen" class="overlay" @click="toggleUserMenu"></div>
 </template>
 
 <script lang="ts">
@@ -108,6 +112,22 @@ toggleSideBar,
 <style lang="scss">
 @import '../assets/scss/vars.scss';
 
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.4s ease;
+}
+
+.slide-enter, .slide-leave-to {
+  transform: translateX(-100%);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
 .side-bar {
   display: flex;
   flex-direction: column;
@@ -115,10 +135,8 @@ toggleSideBar,
   width: 250px;
   background-color: $white;
   position: relative;
-  transition: transform 0.5s;
-  &.hidden {
-    transform: translateX(-100%);
-  }
+  transition: transform 0.4s ease;
+  
   &__section {
     flex-grow: 1;
     display: flex;
@@ -155,7 +173,6 @@ toggleSideBar,
   &__pin-button {
     position: absolute;
     cursor: pointer;
-    top: 5px;
     right: -38px;
     background-color: $white;
     padding: 10px;
@@ -252,13 +269,13 @@ toggleSideBar,
 
 .side-bar-toggle {
 position: fixed;
-top: 10px;
 left: 0;
 background-color: $white;
 padding: 10px;
 border: 1px solid $grey2;
 cursor: pointer;
 z-index: 1001;
+transition: opacity 0.4s ease;
 }
 .overlay {
   position: fixed;
