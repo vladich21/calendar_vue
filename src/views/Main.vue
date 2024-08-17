@@ -31,7 +31,7 @@
           <div class="tooltiptext">Grid</div>
         </button>
         <button class="task_button" :class="{ active: viewMode === 'list' }" @click="setViewMode('list')">
-          <img src="@/assets/img/svg/list.svg" alt="list">
+          <List />
           <div class="tooltiptext">List</div>
         </button>
         <div class="sorting">
@@ -83,6 +83,10 @@
           />
         </div>
         <div class="task_options">
+          <button class="task_button" v-if="isMobileView" @click="toggleTaskOptions(task)">
+    <img src="@/assets/img/svg/three_dots.svg" alt="options">
+  </button>
+  <div v-else class="task_options" >
           <button class="task_button" @click="editTask(task)">
             <img src="@/assets/img/svg/edit.svg" alt="edit">
           </button>
@@ -100,6 +104,7 @@
           </button>
         </div>
       </div>
+      </div>
     </div>
   </section>
 </template>
@@ -115,6 +120,7 @@ import Preloader from '@/assets/icons/Preloader.vue';
 import Sidebar from '../components/Sidebar.vue';
 import Grid from '@/assets/icons/Grid.vue';
 import Printer from '@/assets/icons/Printer.vue';
+import List from '@/assets/icons/List.vue';
 
 const authorizationStore = useAuthorizationStore();
 const router = useRouter();
@@ -128,17 +134,21 @@ const priorityDropdownTaskId = ref<string | null>(null);
 const dayOfWeek = ref('')
 const day = ref('')
 const month = ref('')
+const isMobileView = ref(window.innerWidth <= 600) 
 
 onBeforeMount(async () => {
   await validateAuthorization();
   updateDate();
 });
+
 onMounted(() => {
   document.addEventListener('mousedown', handleOutsideClick);
+  window.addEventListener('resize', handleResize);
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener('mousedown', handleOutsideClick);
+  window.removeEventListener('resize', handleResize);
 });
 
 async function validateAuthorization() {
@@ -205,6 +215,9 @@ function editTask(task: Task) {
 }
 
 function saveTask(task: Task) {
+  if (task.name.length > 500) {
+    task.name = task.name.slice(0, 500); // обрезка до 500 символов
+  }
   task.isEditing = false;
 }
 
@@ -223,13 +236,23 @@ function handleOutsideClick(e: MouseEvent) {
   }
 }
 
+enum Priority {
+  Hard = 'hard',
+  Medium = 'medium',
+  Easy = 'easy'
+}
+
 function sortBy(criteria: string) {
   console.log(`Sorting by: ${criteria}`);
   switch (criteria) {
     case 'priority':
-      tasks.value.sort((a, b) => { 
-        const priorityOrder: { [key: string]: number } = { hard: 3, medium: 2, easy: 1 };
-        return priorityOrder[b.priority] - priorityOrder[a.priority];
+      tasks.value.sort((a, b) => {
+        const priorityOrder: { [key in Priority]: number } = {
+          [Priority.Hard]: 3,
+          [Priority.Medium]: 2,
+          [Priority.Easy]: 1
+        };
+        return priorityOrder[b.priority as Priority] - priorityOrder[a.priority as Priority];
       });
       break;
     case 'dateCompleted':
@@ -285,6 +308,12 @@ dayOfWeek.value = daysOfWeek[date.getDay()];
 day.value = date.getDate().toString();
 month.value = months[date.getMonth()];
 }
+function handleResize(){
+  isMobileView.value = window.innerWidth <= 600;
+}
+function toggleTaskOptions(task: Task) {
+  console.log(`Toggle options for task: ${task.name}`)
+}
 </script>
 
 
@@ -310,6 +339,7 @@ month.value = months[date.getMonth()];
   height: 100vh;
   background-color: $grey3;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 .search {
   width: 60%;
@@ -350,10 +380,10 @@ month.value = months[date.getMonth()];
 
 .calendar__actions {
   display: flex;
-  align-items: center;
   width: 80%;
   height: 60px;
   gap: 50px;
+  align-items: center;
   border-bottom: 1px solid $grey;
   border-top: 1px solid $grey;
  
@@ -362,14 +392,15 @@ month.value = months[date.getMonth()];
   font-size: 20px;
 }
 
-.task_button{
+.task_button_img {
   width: 20px;
   height: 20px;
   object-fit: contain;
 }
-.task_button img{
-height: 100%;
-width: 100%;
+.task_button{
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
 }
 .img-button-three_dots {
   margin-top: 22px;
@@ -383,20 +414,25 @@ width: 100%;
 .sorting{
   display: flex;
   margin-left: auto;
+  position: relative;
 }
 .dropdown-content {
-  display: block;
+  // display: none;
   position: absolute;
+  box-sizing: border-box;
   background-color: #fff;
-  min-width: 100px;
+  min-width: 146px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
   border-radius: 10px;
-  // padding: 5px 0;
-  margin-top: 50px;
-  right: 100px;
+  margin-top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
+// .task_button:hover .dropdown-content{
+//   // display: block;
+// }
 .dropdown-content li {
   color: black;
   padding: 10px 15px;
@@ -424,6 +460,8 @@ width: 100%;
     display: grid;
     grid-template-rows: repeat(auto-fill, minmax(1fr));
     grid-auto-flow: row;
+    overflow-x:hidden;
+    width: 80%;
     .task {
   margin: 1px auto;
   border-radius: 1px;
@@ -436,6 +474,7 @@ width: 100%;
 .tasks_new {
   width: 100%;
   padding: 40px;
+  overflow-y: auto;
 }
 
 .add-task {
@@ -506,25 +545,32 @@ width: 100%;
   display: flex;
   justify-content: space-between;
   margin: 10px auto;
-  width: 80%;
+  width: 85%;
   background-color: #ffffff;
   border-radius: 30px;
   padding: 15px;
   box-shadow: 0px 8px 38px 0px rgba(0, 0, 0, 0.1);
 }
-.task_left > span{
-  padding-left: 25px;
-  display: flex;
-  align-items: center;
-  width: 90%;
-  white-space: nowrap;
+
+.task_left span,
+.task_left input {
+  width: 100%;
+  max-height: none;
   overflow: hidden;
-  text-overflow: ellipsis;
+  display: inline-block;
+  white-space: normal;
+  max-width: 500px;
+  padding-left: 10px;
 }
 .task_left .edit-input {
-  padding-left: 25px;
-  width: 90%;
+  padding-left: 10px;
+  width: 80%;
   border: none;
+  max-height: none;
+  max-width: 500px;
+  overflow: hidden;
+  display: inline-block;
+  white-space: normal;
   border-bottom: 1px solid $grey;
 }
 
@@ -532,14 +578,20 @@ width: 100%;
   display: flex;
   gap: 20px;
   margin-left: 10px;
+  align-items: center;
 }
 
 .task_left {
   display: flex;
   align-items: center;
-  width: 90%; /* чтобы span и input занимали всю ширину контейнера */
+  width: 70%; /* чтобы span и input занимали всю ширину контейнера */
 }
-
+.task_left input {
+  flex-grow: 1;
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .task.completed {
   text-decoration: line-through;
 }
@@ -553,6 +605,14 @@ width: 100%;
   opacity: 1;
 }
 
+.task_button {
+  position: relative; /* Необходимо для правильного позиционирования подсказки */
+  display: inline-block;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
 /* Стили для подсказки */
 .task_button .tooltiptext {
   visibility: hidden; 
@@ -564,7 +624,7 @@ width: 100%;
   padding: 4px;
   position: absolute;
   z-index: 1;
-  bottom: 90%; 
+  bottom: 140%; 
   left: 50%;
   font-size: 15px;
   transform: translateX(-50%);
@@ -581,7 +641,7 @@ width: 100%;
   background: #333;
   transition: 0.3s;
   position: absolute;
-  bottom: 0;
+  bottom: -30%;
   left: 0;
 }
 .task_button:hover:before {
@@ -643,5 +703,44 @@ width: 100%;
 }
 .priority-important:hover, .priority-medium:hover, .priority-easy:hover {
   opacity: 1;
+}
+@media (max-width: 700px){
+  .dropdown-content {
+  transform: translateX(-90%);
+}
+}
+@media (max-width: 600px) {
+  .search{
+    padding:  30px 20px 0 0;
+    width: 70%;
+  }
+  .calendar{
+    width: 95%;
+    padding: 10px;
+  }
+  .calendar__date{
+    margin-right: 15px;
+  }
+.task_options{
+  margin-left: 10px;
+}
+.calendar__actions{
+  gap: 30px;
+  width: 100%;
+}
+.add-task{
+  width: 90%;
+}
+.tasks{
+  padding: 20px 10px;
+}
+.tasks_new {
+  padding: 10px;
+}
+}
+@media (max-width: 425px){
+  .add-task_button{
+    display: none;
+  }
 }
 </style>

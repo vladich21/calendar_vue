@@ -132,7 +132,7 @@ toggleSideBar,
   display: flex;
   flex-direction: column;
   height: 100vh;
-  width: 250px;
+  width: 238px;
   background-color: $white;
   position: relative;
   transition: transform 0.4s ease;
