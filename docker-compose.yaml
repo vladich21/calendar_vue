@@ -1,0 +1,21 @@
+version: '4.28'
+services:
+  userservice:
+    image: salmon20030/boomerang-client-side:calendar-userservice
+    container_name: userservice
+    ports:
+      - "8083:8080"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:16.2-alpine
+    container_name: postgresql
+    ports:
+      - ${POSTGRES_HOST_PORT:-5432}:5432
+    environment:
+      POSTGRES_DB: boomerang_cs_db
+      POSTGRES_USER: username
+      POSTGRES_PASSWORD: password
+networks:
+  elk:
+    driver: bridge
