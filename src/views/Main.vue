@@ -114,7 +114,7 @@ import { onBeforeMount, ref, onMounted, onBeforeUnmount } from 'vue';
 import type { Task } from '@/types/types';  // Обновленный путь импорта
 import { useRouter } from 'vue-router';
 import type { AxiosError } from 'axios';
-import { authMe } from '@/api/authMe';
+// import { authMe } from '@/api/authMe';
 import { useAuthorizationStore } from '../store/useAuthorizationStore';
 import Preloader from '@/assets/icons/Preloader.vue';
 import Sidebar from '../components/Sidebar.vue';
@@ -157,16 +157,16 @@ async function validateAuthorization() {
   }
 
   authorizationStore.setIsLoading(true);
-  try {
-    const response = await authMe();
-    if (response.status === 200) {
-      authorizationStore.setIsSuccess(true);
-    }
-  } catch (e) {
-    handleAuthError(e);
-  } finally {
-    authorizationStore.setIsLoading(false);
-  }
+  // try {
+  //   const response = await authMe();
+  //   if (response.status === 200) {
+  //     authorizationStore.setIsSuccess(true);
+  //   }
+  // } catch (e) {
+  //   handleAuthError(e);
+  // } finally {
+  //   authorizationStore.setIsLoading(false);
+  // }
 }
 
 function handleAuthError(error: unknown) {

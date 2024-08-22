@@ -100,21 +100,28 @@
               </div>
             </div>
           </form>
+          <div v-if="showModal" class="modal">
+            <div class="modal-content">
+              <p>A confirmation email has been sent to {{ email }}. Please check your email to confirm your account.</p>
+              <span class="close" @click="closeModal">&times;</span>
+            </div>
+              </div>
         </div>
       </section>
     </div>
   </template>
 
   <script>
-  import axios from 'axios';
-  import { validator } from '../js/utils'
-  import eye from '@/assets/img/svg/eye.svg'
-  import eyeClose from '@/assets/img/svg/eye_close.svg'
+  import { validator } from '../js/utils';
+  import eye from '@/assets/img/svg/eye.svg';
+  import eyeClose from '@/assets/img/svg/eye_close.svg';
+  import { mainApi, fetchPostRegistration } from '@/api/config.ts';
 
   export default {
     setup() {
       return { eyeClose, eye }
     },
+    //Хранит данные 
     data() {
       return {
         email: '',
@@ -123,11 +130,12 @@
         Last_name: '',
         passworFieldFocus: false,
         passwordIsVisible: false,
+        showModal: false,
         isLoading: false,
-        error: null
+        error: ''
       }
     },
-    computed: {
+    computed: { //Вычисляемые свойства
       passwordRules() {
         const lowerCaseLetters = /[a-z]/
         const upperCaseLetters = /[A-Z]/
@@ -146,10 +154,11 @@
           { text: 'letters of the Latin alphabet only', isValid: includeLowerCase }
         ]
       },
-      submitButtonIsDisabled() {
+      submitButtonIsDisabled() { //возвращает true, если кнопка отправки должна быть отключена
         return !this.passwordRules.every((el) => el.isValid) || this.isLoading
       },
-      getEyeIcon() {
+      getEyeIcon() { //возвращает соответствующую иконку для отображения состояния видимости пароля.
+
         return this.passwordIsVisible ? this.eye : this.eyeClose
       }
     },
@@ -164,20 +173,23 @@
       handlePasswordFieldBlur() {
         this.passworFieldFocus = false
       },
-      async handleSubmit() {
+      async handleSubmit() { // отправляет данные регистрации на сервер, обрабатывает ответ и возможные ошибки.
         this.error = null
         this.isLoading = true
-        const requestData = {
-          email: this.email,
-          password: this.password,
-          First_name: this.First_name,
-          Last_name: this.Last_name,
-        }
 
         try {
-          const response = await axios.post('http://127.0.0.1:5173/api/registration', requestData);
-          console.log('Registration successful:', response.data);
-          this.$router.push('/sign-in');
+          const response = await fetchPostRegistration({
+            email:this.email,
+            password:this.password,
+            First_name:this.First_name,
+            Last_name:this.Last_name
+          })
+          // console.log('Registration successful:', response.data);
+          
+          if(response.status === 200) {
+            await this.sendConfirmationEmail()
+            this.showModal = true
+          }
 
           // Handle successful registration (e.g., redirect to login page)
         } catch (e) {
@@ -185,10 +197,22 @@
         } finally {
           this.isLoading = false
         }
-      },
-      async fetchRegistrationPage() {
+      }, 
+      async sendConfirmationEmail() {
+      try {
+        await mainApi.post('/send-confirmation-email', { email: this.email });
+      } catch (e) {
+        console.error('Ошибка при отправке письма для подтверждения:', e);
+      }
+    },
+
+    closeModal() {
+      this. showModal = false;
+      this.$router.push('/sign-in');
+    },
+      async fetchRegistrationPage() { //выполняет GET-запрос для получения страницы регистрации
         try {
-          const response = await axios.get('http://127.0.0.1:5173/api/registration');
+          const response = await mainApi.get('/registration');
           console.log('Registration successful:', response.data);
         } catch (e) {
           console.error('Error fetching registration page:', e);
@@ -203,4 +227,39 @@
 
   <style scoped>
   @import '@/assets/main.scss';
+
+  .modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  transform: translateY(-50%);
+  max-width: 400px;
+  text-align: center;
+}
+.close {
+  position: relative;
+  bottom: 65px;
+  left: 50%;
+  font-size: 24px;
+  cursor: pointer;
+}
+.close:hover{
+  color: #999999;
+}
+  .error {
+  color: red;
+}
+
   </style>
